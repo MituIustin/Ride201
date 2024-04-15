@@ -7,7 +7,7 @@ public class MainCharacter : BaseClassCharacter
     public float jumpForce = 400f;
     public float dashForce = 500f;
     public float horizontalMove;
-    public bool facingRight = true;
+    private bool facingRight;
     public bool jump = false;
     public bool dash = false;
     Rigidbody2D rb;
@@ -26,6 +26,7 @@ public class MainCharacter : BaseClassCharacter
     {
         rb = GetComponent<Rigidbody2D>();
         MainChrConstructor();
+        facingRight = true;
     }
     private void Update()
     {
@@ -39,13 +40,16 @@ public class MainCharacter : BaseClassCharacter
         //jumping
         if (Input.GetKeyDown(KeyCode.Space) && GetComponent<BoxCollider2D>().IsTouchingLayers()) jump = true;
         if (Input.GetKeyDown(KeyCode.Z)) dash = true;
-        if (Input.GetKeyDown(KeyCode.RightArrow)) facingRight = true;
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) facingRight = false;
+
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) facingRight = true;
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) facingRight = false;
     }
     private void FixedUpdate()
     {
+        
         //we create our moving function
         Moving(horizontalMove, jump, dash);
+       
     }
 
     void Moving(float movement, bool canjump, bool candash)
@@ -64,6 +68,13 @@ public class MainCharacter : BaseClassCharacter
             rb.AddForce(new Vector2(dashForce * dashDirection * 10, 0f), ForceMode2D.Force);
             dash = false; 
         }
+    }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag.Equals("npc"))
+        {
+            Destroy(collision.gameObject);
+        }
     }
 }

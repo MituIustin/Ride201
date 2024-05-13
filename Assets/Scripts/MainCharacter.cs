@@ -1,7 +1,8 @@
-using Assets;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainCharacter : BaseClassCharacter
 {
@@ -30,7 +31,7 @@ public class MainCharacter : BaseClassCharacter
         facingRight = true;
     }
     private void Update()
-    {   
+    {
         //moving direction
         horizontalMove = Input.GetAxis("Horizontal") * Speed;
 
@@ -73,10 +74,36 @@ public class MainCharacter : BaseClassCharacter
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("npc") && NPCSpawnVariables.spawning == false)
+        if (collision.gameObject.tag.Equals("npc"))
         {
             Destroy(collision.gameObject);
-            NPCSpawnVariables.npcsalive -= 1;
         }
+    }
+
+   public void IncreaseSpeed()
+    {
+        StartCoroutine(ChangeSpeed());
+    }
+
+    private IEnumerator ChangeSpeed()
+    {
+        Speed = 50f;
+
+        GameObject.FindWithTag("scrollView").GetComponent<UiConsumables>().AddItemUi(0);
+
+        if (GameObject.FindWithTag("scrollView"))
+        {
+            Debug.Log("TEST");
+        }
+
+        Debug.Log("VITEZA");
+
+        yield return new WaitForSeconds(15f);
+
+        Debug.Log("FARA VITEZA");
+
+        Speed = 20f;
+
+
     }
 }

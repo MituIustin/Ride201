@@ -6,22 +6,22 @@ using UnityEngine;
 public class NPCController : MonoBehaviour
 {
     GameObject Player;
-<<<<<<< Updated upstream
+
     private bool got_on_bus = false;
     private float leaving_speed = 0f;
     private bool isDestructionStarted = false;
-=======
+
     List<GameObject> npcs = new List<GameObject>();
     Collider2D col;
     SpriteRenderer spriteRenderer;
->>>>>>> Stashed changes
+
 
     void Start()
     {
         Player = GameObject.Find("player");
         GameObject[] npcObjects = GameObject.FindGameObjectsWithTag("npc");
         col = GetComponent<Collider2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>(); 
+        spriteRenderer = GetComponent<SpriteRenderer>();
         foreach (GameObject npc in npcObjects)
         {
             npcs.Add(npc);
@@ -38,7 +38,6 @@ public class NPCController : MonoBehaviour
 
     void Update()
     {
-<<<<<<< Updated upstream
         transform.position = Vector2.MoveTowards(transform.position,
                                                 Player.transform.position,
                                                 2f * Time.deltaTime);
@@ -54,8 +53,21 @@ public class NPCController : MonoBehaviour
                 StartCoroutine(DestroyAfterDelay(5)); // 5 seconds delay
             }
         }
+        Vector3 vec = new Vector3(transform.position.x, transform.position.y, 3);
+        transform.position = vec;
+        Vector3 v = new Vector3(Player.transform.position.x, transform.position.y, 3f);
+        transform.position = Vector3.MoveTowards(transform.position, v, 2f * Time.deltaTime);
 
+        if (transform.position.x < Player.transform.position.x)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+        }
     }
+
 
     IEnumerator DestroyAfterDelay(float delay)
     {
@@ -72,23 +84,5 @@ public class NPCController : MonoBehaviour
             got_on_bus = true;
         }
     }
-
-
-    
-=======
-        Vector3 vec = new Vector3(transform.position.x, transform.position.y, 3);
-        transform.position = vec;
-        Vector3 v = new Vector3(Player.transform.position.x, transform.position.y, 3f);
-        transform.position = Vector3.MoveTowards(transform.position, v, 2f * Time.deltaTime);
-
-        if (transform.position.x < Player.transform.position.x)
-        {
-            spriteRenderer.flipX = true; 
-        }
-        else
-        {
-            spriteRenderer.flipX = false; 
-        }
-    }
->>>>>>> Stashed changes
 }
+

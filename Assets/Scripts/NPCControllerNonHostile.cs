@@ -1,3 +1,4 @@
+using Assets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,9 @@ public class NPCControllerNonHostile : MonoBehaviour
     List<GameObject> npcs = new List<GameObject>();
     Collider2D col;
 
+    private bool got_on_bus = false;
+    private float leaving_speed = 0f;
+    private bool isDestructionStarted = false;
 
     public float speed = 1f;
     public float changeDirectionTime; 
@@ -45,6 +49,12 @@ public class NPCControllerNonHostile : MonoBehaviour
         transform.localScale = newScale;
     }
 
+    IEnumerator DestroyAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(gameObject);
+    }
+
 
     void Update()
     {
@@ -57,6 +67,18 @@ public class NPCControllerNonHostile : MonoBehaviour
 
         Vector2 movement = new Vector2(currentDirection * speed, rb.velocity.y);
         rb.velocity = movement;
+
+        if (got_on_bus == false && NPCSpawnVariables.spawning == false)
+        {  //scapam de npcuri ramase afara
+            transform.position -= new Vector3(leaving_speed, 0, 0) * Time.deltaTime;
+            leaving_speed += 0.005f;
+
+            if (!isDestructionStarted)
+            {
+                isDestructionStarted = true;
+                StartCoroutine(DestroyAfterDelay(5)); // 5 seconds delay
+            }
+        }
     }
 
 

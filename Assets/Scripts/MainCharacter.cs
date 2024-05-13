@@ -45,13 +45,8 @@ public class MainCharacter : BaseClassCharacter
     }
 
     private void Update()
-<<<<<<< Updated upstream
     {   
         //moving direction
-=======
-    {
-        // Moving direction
->>>>>>> Stashed changes
         horizontalMove = Input.GetAxis("Horizontal") * Speed;
 
         // Rotating
@@ -112,11 +107,8 @@ public class MainCharacter : BaseClassCharacter
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-<<<<<<< Updated upstream
+
         if (collision.gameObject.tag.Equals("npc") && NPCSpawnVariables.spawning == false)
-=======
-        if (collision.gameObject.CompareTag("npc"))
->>>>>>> Stashed changes
         {
             Destroy(collision.gameObject);
             NPCSpawnVariables.npcsalive -= 1;

@@ -10,6 +10,7 @@ TagManager:
   - scrollView
   - wall
   - tp_trigger
+  - ground
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - grd
   - 
   - 
   - 

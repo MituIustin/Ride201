@@ -7,8 +7,6 @@ TagManager:
   - player
   - background(for trigger)
   - npc
-  - wall
-  - tp_trigger
   layers:
   - Default
   - TransparentFX

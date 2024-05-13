@@ -15,7 +15,7 @@ public class SectionSpawner : MonoBehaviour
     // Method to be called after the delay
     void PerformAction()
     {
-        Instantiate(roadSection, new Vector3(transform.position.x + 21.2f, -0.58f, transform.position.z), Quaternion.identity);
+        Instantiate(roadSection, new Vector3(transform.position.x + 21.2f, 1.2f, transform.position.z), Quaternion.identity);
     }
 }
 

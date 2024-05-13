@@ -1,0 +1,228 @@
+[33mcommit ea45e8bd424706f55dd9e337bf9513258a83a1e7[m[33m ([m[1;36mHEAD -> [m[1;32mDenis_Backup_real[m[33m, [m[1;31morigin/Denis_Backup_real[m[33m)[m
+Merge: d6eef20 1b1712c
+Author: deniss673 <denis.denis67889@gmail.com>
+Date:   Mon May 13 21:45:32 2024 +0300
+
+    Merge branch 'iustin' into Denis_Backup_real
+
+[33mcommit 1b1712c69913c3bccc5781d161937a308771e0ed[m[33m ([m[1;31morigin/Denis_Backup[m[33m, [m[1;32mDenis_Backup[m[33m)[m
+Merge: eac246f e1c22b9
+Author: Andrei Bogos <115936939+Bogosanu@users.noreply.github.com>
+Date:   Mon May 13 21:39:54 2024 +0300
+
+    Merge pull request #18 from MituIustin/Bogos
+    
+    test_commit
+
+[33mcommit e1c22b9e56d25f91ad139eee60850f2ba1ec6a86[m
+Author: Bogosanu <Bogosanu@users.noreply.github.com>
+Date:   Mon May 13 21:39:30 2024 +0300
+
+    test_commit
+
+[33mcommit d6eef2003ccc0665160616a374ac7938fa74c0cf[m[33m ([m[1;31morigin/Denis[m[33m, [m[1;32mDenis[m[33m)[m
+Merge: eac246f de1c617
+Author: deniss673 <119208460+deniss673@users.noreply.github.com>
+Date:   Mon May 13 21:30:53 2024 +0300
+
+    Merge pull request #17 from MituIustin/Denis
+    
+    Denis
+
+[33mcommit de1c617c10f755168265bac40256b49b6932e841[m
+Author: deniss673 <denis.denis67889@gmail.com>
+Date:   Mon May 13 21:20:31 2024 +0300
+
+    added items phase 1.1
+
+[33mcommit b7b164794d1763751febb02186402f9cab688eda[m
+Merge: c0b58bb 65ca855
+Author: deniss673 <119208460+deniss673@users.noreply.github.com>
+Date:   Mon May 13 21:12:58 2024 +0300
+
+    Merge pull request #16 from MituIustin/revert-15-itembranch
+    
+    Revert "added items + ce a facut bogos"
+
+[33mcommit 65ca85530e8861b89d3b7282a71d5d46c1b24726[m
+Author: deniss673 <119208460+deniss673@users.noreply.github.com>
+Date:   Mon May 13 21:12:43 2024 +0300
+
+    Revert "added items + ce a facut bogos"
+
+[33mcommit c0b58bb04b78eceba87a8225e13cfe678c9579a9[m
+Merge: 675bd3b f7658a7
+Author: deniss673 <119208460+deniss673@users.noreply.github.com>
+Date:   Mon May 13 21:04:26 2024 +0300
+
+    Merge pull request #15 from MituIustin/itembranch
+    
+    added items + ce a facut bogos
+
+[33mcommit f7658a7e2502fa315ef9d28d978aadc70fe204a7[m
+Merge: eac246f 675bd3b
+Author: deniss673 <119208460+deniss673@users.noreply.github.com>
+Date:   Mon May 13 21:04:09 2024 +0300
+
+    Merge branch 'Denis' into itembranch
+
+[33mcommit 675bd3b9f7b3623544649bb5880e8c0f179f12ab[m
+Author: deniss673 <denis.denis67889@gmail.com>
+Date:   Mon May 13 20:50:53 2024 +0300
+
+    added items phase 1
+
+[33mcommit eac246f1e718cff0622d5f33948234acd609c4b4[m
+Merge: ec7ce4e 1e7ba91
+Author: Andrei Bogos <115936939+Bogosanu@users.noreply.github.com>
+Date:   Mon May 13 19:01:38 2024 +0300
+
+    Merge pull request #14 from MituIustin/Bogos
+    
+    Bogos
+
+[33mcommit 1e7ba910f556ae6231946cffc8288dfe051004a2[m
+Author: Bogosanu <Bogosanu@users.noreply.github.com>
+Date:   Mon May 13 18:58:59 2024 +0300
+
+    generation triggers + bus stops + npc spawns
+
+[33mcommit ec7ce4ee33bc7194633bd904ef8087b78fb3053c[m
+Merge: ad693b0 f82dc0c
+Author: deniss673 <denis.denis67889@gmail.com>
+Date:   Mon May 13 15:06:01 2024 +0300
+
+    Merge branch 'new-main' into Denis
+
+[33mcommit 9c06573e90206ba45b4826c3a3d2449649838ebd[m
+Merge: ce41e1e ad693b0
+Author: MituIustin <126506678+MituIustin@users.noreply.github.com>
+Date:   Mon Apr 15 21:59:14 2024 +0300
+
+    Merge pull request #13 from MituIustin/iustin
+    
+    update branch bogos
+
+[33mcommit ad693b010cd452b3fa8d10a94cf3e026515cf289[m
+Merge: ce41e1e 4ef6ac4
+Author: Andrei Bogos <115936939+Bogosanu@users.noreply.github.com>
+Date:   Mon Apr 15 21:42:32 2024 +0300
+
+    Merge pull request #12 from Bogosanu/Bogos
+    
+    Bogos
+
+[33mcommit 4ef6ac4a5e69f533eccfd70b36e50075f327a922[m
+Merge: cfb66d4 ce41e1e
+Author: Andrei Bogos <115936939+Bogosanu@users.noreply.github.com>
+Date:   Mon Apr 15 21:42:19 2024 +0300
+
+    Merge branch 'iustin' into Bogos
+
+[33mcommit cfb66d4943ba825dced3f8e3a0e6d57abd51e393[m
+Author: Bogosanu <Bogosanu@users.noreply.github.com>
+Date:   Mon Apr 15 21:33:47 2024 +0300
+
+    added infinite level generation
+    
+    + moving background
+
+[33mcommit f82dc0c48e2d5b5ec448e924f990b9f3667029cd[m
+Merge: d19c4f4 ce41e1e
+Author: MituIustin <126506678+MituIustin@users.noreply.github.com>
+Date:   Mon Apr 15 20:16:07 2024 +0300
+
+    Merge pull request #6 from MituIustin/iustin
+    
+    npcs
+
+[33mcommit ce41e1eb4799cd2dff80d385fe4cb66326b305a9[m
+Author: MituIustin <126506678+MituIustin@users.noreply.github.com>
+Date:   Mon Apr 15 20:14:48 2024 +0300
+
+    npcs
+
+[33mcommit 126a6353e38ef1030b3b8108c264976bb2f31174[m
+Merge: 1faa67a d19c4f4
+Author: Andrei Bogos <115936939+Bogosanu@users.noreply.github.com>
+Date:   Mon Apr 15 19:18:03 2024 +0300
+
+    Merge branch 'MituIustin:main' into Bogos
+
+[33mcommit 1faa67a540b1344de1dc6e7f842630b1f7f5337e[m
+Author: Bogosanu <Bogosanu@users.noreply.github.com>
+Date:   Mon Apr 15 19:14:59 2024 +0300
+
+    fixed previous pngs
+
+[33mcommit bcf7f7874b5fb3b45ca7b07f568eabd7ead07f9b[m
+Merge: 1c2a6bf d19c4f4
+Author: MituIustin <126506678+MituIustin@users.noreply.github.com>
+Date:   Mon Apr 15 19:10:41 2024 +0300
+
+    Merge pull request #4 from MituIustin/main
+    
+    pull from main
+
+[33mcommit d19c4f454f6ee187e318307a54d186a6dacdfa44[m
+Author: MituIustin <126506678+MituIustin@users.noreply.github.com>
+Date:   Mon Apr 15 19:07:05 2024 +0300
+
+    movement + colliders
+
+[33mcommit d93ed3e55706836d6380ed43144a4b91b873c499[m
+Merge: 1c2a6bf 01a6b0f
+Author: MituIustin <126506678+MituIustin@users.noreply.github.com>
+Date:   Mon Apr 15 19:04:43 2024 +0300
+
+    Merge pull request #3 from Bogosanu/Bogos
+    
+    added more pngs
+
+[33mcommit 01a6b0fe1acfc980d0a6f68de1b8cadaa95ca416[m
+Author: Bogosanu <Bogosanu@users.noreply.github.com>
+Date:   Mon Apr 15 18:38:31 2024 +0300
+
+    added more pngs
+
+[33mcommit 1c2a6bf601ab2134beaf9c944d54de5fa930f9d8[m
+Merge: 0af03f9 8655cbc
+Author: MituIustin <126506678+MituIustin@users.noreply.github.com>
+Date:   Mon Apr 15 18:09:33 2024 +0300
+
+    Merge pull request #2 from Bogosanu/Bogos
+    
+    added assets made in photoshop
+
+[33mcommit 8655cbc655f1d054353accc519b2fcff05dd96d8[m
+Author: Bogosanu <Bogosanu@users.noreply.github.com>
+Date:   Mon Apr 15 18:07:59 2024 +0300
+
+    added assets made in photoshop
+
+[33mcommit 0af03f984b76e84e413a7a8ef474e403b6a05827[m
+Merge: 8c90b2f a1a61df
+Author: MituIustin <126506678+MituIustin@users.noreply.github.com>
+Date:   Mon Apr 15 18:01:17 2024 +0300
+
+    Merge pull request #1 from Bogosanu/Denis
+    
+    create main menu
+
+[33mcommit a1a61dfe429ad56c651c36f6c1994bffe7831703[m
+Author: deniss673 <denis.denis67889@gmail.com>
+Date:   Mon Apr 15 17:57:11 2024 +0300
+
+    create main menu
+
+[33mcommit 8c90b2fcb3926b69291cfd5031a1ba095d40f31c[m
+Author: MituIustin <126506678+MituIustin@users.noreply.github.com>
+Date:   Mon Apr 15 15:04:54 2024 +0300
+
+    basic movement
+
+[33mcommit 2ceebd7cdfbe9d0f157cb3bf09331c079b00f4c0[m
+Author: MituIustin <126506678+MituIustin@users.noreply.github.com>
+Date:   Mon Apr 15 12:50:12 2024 +0300
+
+    Initial commit

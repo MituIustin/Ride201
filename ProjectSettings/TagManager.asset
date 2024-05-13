@@ -8,6 +8,8 @@ TagManager:
   - background(for trigger)
   - npc
   - scrollView
+  - wall
+  - tp_trigger
   layers:
   - Default
   - TransparentFX

@@ -10,4 +10,6 @@ public class BaseClassCharacter : MonoBehaviour
     public int Damage { get; set; }
     public bool Attack { get; set; }
     public bool Hostile { get; set; }
+
+    
 }

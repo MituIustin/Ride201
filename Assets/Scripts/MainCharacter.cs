@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainCharacter : BaseClassCharacter
 {
@@ -76,5 +78,32 @@ public class MainCharacter : BaseClassCharacter
         {
             Destroy(collision.gameObject);
         }
+    }
+
+   public void IncreaseSpeed()
+    {
+        StartCoroutine(ChangeSpeed());
+    }
+
+    private IEnumerator ChangeSpeed()
+    {
+        Speed = 50f;
+
+        GameObject.FindWithTag("scrollView").GetComponent<UiConsumables>().AddItemUi(0);
+
+        if (GameObject.FindWithTag("scrollView"))
+        {
+            Debug.Log("TEST");
+        }
+
+        Debug.Log("VITEZA");
+
+        yield return new WaitForSeconds(15f);
+
+        Debug.Log("FARA VITEZA");
+
+        Speed = 20f;
+
+
     }
 }

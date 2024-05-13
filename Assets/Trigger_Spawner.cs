@@ -6,7 +6,6 @@ public class Trigger_Spawner : MonoBehaviour
 {
     public GameObject roadSection;
     private bool has_spawned = false;
-    // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("player") && has_spawned == false)

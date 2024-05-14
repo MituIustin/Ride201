@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCController : MonoBehaviour
+public class NPCController : BaseClassCharacter
 {
     GameObject Player;
 
@@ -27,6 +27,14 @@ public class NPCController : MonoBehaviour
 
     void Update()
     {
+        /*
+        if(base.getHealth() <= 0)
+        {
+            Debug.Log(base.getHealth());
+            Destroy(gameObject);
+        }
+        */
+
         transform.position = Vector2.MoveTowards(transform.position,
                                                 Player.transform.position,
                                                 2f * Time.deltaTime);
@@ -67,6 +75,7 @@ public class NPCController : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(other.gameObject);
         if (other.gameObject.CompareTag("tp_trigger") && NPCSpawnVariables.spawning == true)
         {
             transform.position = new Vector2(transform.position.x, transform.position.y + 3f);
@@ -75,16 +84,23 @@ public class NPCController : MonoBehaviour
         }
         else
         {
-            GameObject[] npcObjects = GameObject.FindGameObjectsWithTag("npc");
-            foreach (GameObject npc in npcObjects)
+            if (other.gameObject.CompareTag("punch"))
             {
-                npcs.Add(npc);
+                //base.getPunched(100);
             }
-
-            foreach (GameObject npc in npcs)
+            else
             {
-                Collider2D npcCollider = npc.GetComponent<Collider2D>();
-                Physics2D.IgnoreCollision(npcCollider, col);
+                GameObject[] npcObjects = GameObject.FindGameObjectsWithTag("npc");
+                foreach (GameObject npc in npcObjects)
+                {
+                    npcs.Add(npc);
+                }
+
+                foreach (GameObject npc in npcs)
+                {
+                    Collider2D npcCollider = npc.GetComponent<Collider2D>();
+                    Physics2D.IgnoreCollision(npcCollider, col);
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
 using Assets;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class NPCControllerNonHostile : MonoBehaviour
     {
         col = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
-        changeDirectionTime = Random.Range(1f, 3f);
+        changeDirectionTime = UnityEngine.Random.Range(1f, 3f);
         directionTimer = changeDirectionTime;
         StartCoroutine(GetOnBus());
     }
@@ -102,8 +103,14 @@ public class NPCControllerNonHostile : MonoBehaviour
 
             foreach (GameObject npc in npcs)
             {
-                Collider2D npcCollider = npc.GetComponent<Collider2D>();
-                Physics2D.IgnoreCollision(npcCollider, col);
+                try
+                {
+                    Collider2D npcCollider = npc.GetComponent<Collider2D>();
+                    Physics2D.IgnoreCollision(npcCollider, col);
+                }
+                catch(Exception e)
+                {
+                }
             }
         }
     }

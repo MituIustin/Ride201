@@ -38,10 +38,16 @@ public class MainCharacter : BaseClassCharacter
 
     private bool checkGrd()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.5f, LayerMask.GetMask("grd"));
-        if (hit.collider.CompareTag("ground"))
+        try
         {
-            return true;
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.5f, LayerMask.GetMask("grd"));
+            if (hit.collider.CompareTag("ground"))
+            {
+                return true;
+            }
+        }
+        catch (Exception e)
+        {
         }
         return false;
     }
@@ -124,7 +130,7 @@ public class MainCharacter : BaseClassCharacter
 
     private IEnumerator ChangeSpeed()
     {
-        Speed = 50f;
+        Speed = 30f;
 
         GameObject.FindWithTag("scrollView").GetComponent<UiConsumables>().AddItemUi(0);
 

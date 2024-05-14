@@ -27,7 +27,7 @@ public class NPCController : BaseClassCharacter
 
     void Update()
     {
-        /*
+        /* bogos
         if(base.getHealth() <= 0)
         {
             Debug.Log(base.getHealth());
@@ -75,7 +75,8 @@ public class NPCController : BaseClassCharacter
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.gameObject);
+        Debug.Log(other.gameObject); // bogos
+
         if (other.gameObject.CompareTag("tp_trigger") && NPCSpawnVariables.spawning == true)
         {
             transform.position = new Vector2(transform.position.x, transform.position.y + 3f);
@@ -86,7 +87,7 @@ public class NPCController : BaseClassCharacter
         {
             if (other.gameObject.CompareTag("punch"))
             {
-                //base.getPunched(100);
+                //base.getPunched(100);   bogos
             }
             else
             {

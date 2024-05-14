@@ -11,6 +11,7 @@ TagManager:
   - wall
   - tp_trigger
   - ground
+  - punch
   layers:
   - Default
   - TransparentFX

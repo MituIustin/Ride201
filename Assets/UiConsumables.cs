@@ -34,14 +34,7 @@ public class UiConsumables : MonoBehaviour
         {
             GameObject buff=buffs[i];
 
-            buff.GetComponent<RectTransform>().anchoredPosition = new Vector2(-80, 30 - 100 * i);
-
-            Transform sliderCloneTransform = buff.transform.GetChild(0);
-
-            GameObject sliderClone = sliderCloneTransform.gameObject;
-
-            
-
+            buff.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 30 - 100 * i);
 
 
         }
@@ -62,7 +55,7 @@ public class UiConsumables : MonoBehaviour
 
         RectTransform pos = newImage.GetComponent<RectTransform>();
 
-        pos.anchoredPosition = new Vector2(-80, 30 - 100 * buffs.Count());
+        pos.anchoredPosition = new Vector2(0, 30 - 100 * buffs.Count());
 
         pos.sizeDelta = new Vector2(80, 80);
 

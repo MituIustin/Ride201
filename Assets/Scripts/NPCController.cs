@@ -19,20 +19,9 @@ public class NPCController : MonoBehaviour
     void Start()
     {
         Player = GameObject.Find("player");
-        GameObject[] npcObjects = GameObject.FindGameObjectsWithTag("npc");
-        col = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        foreach (GameObject npc in npcObjects)
-        {
-            npcs.Add(npc);
-        }
-
-        foreach (GameObject npc in npcs)
-        {
-            Collider2D npcCollider = npc.GetComponent<Collider2D>();
-            Physics2D.IgnoreCollision(npcCollider, col);
-
-        }
+       
+        col = GetComponent<Collider2D>();
     }
 
 
@@ -75,6 +64,7 @@ public class NPCController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("tp_trigger") && NPCSpawnVariables.spawning == true)
@@ -83,6 +73,21 @@ public class NPCController : MonoBehaviour
             NPCSpawnVariables.npcsalive += 1;
             got_on_bus = true;
         }
+        else
+        {
+            GameObject[] npcObjects = GameObject.FindGameObjectsWithTag("npc");
+            foreach (GameObject npc in npcObjects)
+            {
+                npcs.Add(npc);
+            }
+
+            foreach (GameObject npc in npcs)
+            {
+                Collider2D npcCollider = npc.GetComponent<Collider2D>();
+                Physics2D.IgnoreCollision(npcCollider, col);
+            }
+        }
     }
+    
 }
 

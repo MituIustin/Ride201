@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCController : MonoBehaviour
+public class NPCController : BaseClassCharacter
 {
     GameObject Player;
 
@@ -19,25 +19,22 @@ public class NPCController : MonoBehaviour
     void Start()
     {
         Player = GameObject.Find("player");
-        GameObject[] npcObjects = GameObject.FindGameObjectsWithTag("npc");
-        col = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        foreach (GameObject npc in npcObjects)
-        {
-            npcs.Add(npc);
-        }
-
-        foreach (GameObject npc in npcs)
-        {
-            Collider2D npcCollider = npc.GetComponent<Collider2D>();
-            Physics2D.IgnoreCollision(npcCollider, col);
-
-        }
+       
+        col = GetComponent<Collider2D>();
     }
 
 
     void Update()
     {
+        /* bogos
+        if(base.getHealth() <= 0)
+        {
+            Debug.Log(base.getHealth());
+            Destroy(gameObject);
+        }
+        */
+
         transform.position = Vector2.MoveTowards(transform.position,
                                                 Player.transform.position,
                                                 2f * Time.deltaTime);
@@ -75,14 +72,39 @@ public class NPCController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(other.gameObject); // bogos
+
         if (other.gameObject.CompareTag("tp_trigger") && NPCSpawnVariables.spawning == true)
         {
             transform.position = new Vector2(transform.position.x, transform.position.y + 3f);
             NPCSpawnVariables.npcsalive += 1;
             got_on_bus = true;
         }
+        else
+        {
+            if (other.gameObject.CompareTag("punch"))
+            {
+                //base.getPunched(100);   bogos
+            }
+            else
+            {
+                GameObject[] npcObjects = GameObject.FindGameObjectsWithTag("npc");
+                foreach (GameObject npc in npcObjects)
+                {
+                    npcs.Add(npc);
+                }
+
+                foreach (GameObject npc in npcs)
+                {
+                    Collider2D npcCollider = npc.GetComponent<Collider2D>();
+                    Physics2D.IgnoreCollision(npcCollider, col);
+                }
+            }
+        }
     }
+    
 }
 

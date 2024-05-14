@@ -14,26 +14,27 @@ public class NPCController : BaseClassCharacter
     List<GameObject> npcs = new List<GameObject>();
     Collider2D col;
     SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
 
 
     void Start()
     {
         Player = GameObject.Find("player");
         spriteRenderer = GetComponent<SpriteRenderer>();
-       
+        rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
     }
 
 
     void Update()
     {
-        /* bogos
         if(base.getHealth() <= 0)
         {
             Debug.Log(base.getHealth());
+            NPCSpawnVariables.npcsalive -= 1;
             Destroy(gameObject);
         }
-        */
+        
 
         transform.position = Vector2.MoveTowards(transform.position,
                                                 Player.transform.position,
@@ -87,7 +88,17 @@ public class NPCController : BaseClassCharacter
         {
             if (other.gameObject.CompareTag("punch"))
             {
-                //base.getPunched(100);   bogos
+                base.getPunched(100);
+
+                // Apply knockback
+                Vector2 direction = (transform.position - Player.transform.position).normalized;
+                direction += new Vector2(0, 1).normalized;
+                Vector2 knockback = direction.normalized * 5f;
+                rb.AddForce(knockback, ForceMode2D.Impulse);
+
+                // Start the flash red coroutine
+                StartCoroutine(FlashRed());
+
             }
             else
             {
@@ -99,12 +110,22 @@ public class NPCController : BaseClassCharacter
 
                 foreach (GameObject npc in npcs)
                 {
-                    Collider2D npcCollider = npc.GetComponent<Collider2D>();
-                    Physics2D.IgnoreCollision(npcCollider, col);
+                    if (npc != null)
+                    {
+                        Collider2D npcCollider = npc.GetComponent<Collider2D>();
+                        Physics2D.IgnoreCollision(npcCollider, col);
+                    }
                 }
             }
         }
     }
-    
+
+    private IEnumerator FlashRed()
+    {
+        spriteRenderer.color = Color.red;   // Change color to red 
+        yield return new WaitForSeconds(0.5f);  // Wait for 0.5 seconds
+        spriteRenderer.color = Color.white; // Reset color to normal
+    }
+
 }
 

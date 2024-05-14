@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -15,10 +16,16 @@ public class UiConsumables : MonoBehaviour
 
     public GameObject slider;
 
+
     void Update()
     {
         for (int i = buffs.Count - 1; i >= 0; i--)
         {
+            if (i >= buffs.Count)
+            {
+                continue;
+            }
+
             if (buffs[i] == null)
             {
                 buffs.RemoveAt(i);
@@ -30,7 +37,13 @@ public class UiConsumables : MonoBehaviour
 
     public void backInPlace(int index)
     {
-        for(int i = index; i < buffs.Count(); i++)
+        if (index < 0 || index >= buffs.Count)
+        {
+            //Debug.LogError("Invalid index passed to backInPlace");
+            return;
+        }
+
+        for (int i = index; i < buffs.Count(); i++)
         {
             GameObject buff=buffs[i];
 
@@ -67,7 +80,6 @@ public class UiConsumables : MonoBehaviour
 
         test.transform.SetParent(newImage.transform, false);
 
-       
         
         test.GetComponent<DurationBarScript>().TimeLeft(newImage);
 

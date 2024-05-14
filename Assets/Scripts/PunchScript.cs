@@ -1,3 +1,4 @@
+using Assets;
 using System.Collections;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class PunchScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X) && !isPunching)
+        if (Input.GetKeyDown(KeyCode.X) && !isPunching && NPCSpawnVariables.spawning == false)
         {
             punchObject.SetActive(true);
             StartCoroutine(DeactivatePunchAfterDelay(punchDuration));

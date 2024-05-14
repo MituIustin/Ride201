@@ -141,7 +141,7 @@ public class MainCharacter : BaseClassCharacter
 
         Debug.Log("VITEZA");
 
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(20f);
 
         Debug.Log("FARA VITEZA");
 

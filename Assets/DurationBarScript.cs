@@ -7,20 +7,30 @@ using UnityEngine.UI;
 public class DurationBarScript : MonoBehaviour
 {
     
-    public void TimeLeft()
+    public void TimeLeft(GameObject item)
     {
-        StartCoroutine(consume());
+        StartCoroutine(consume(item));
     }
 
-    private IEnumerator consume()
+    private IEnumerator consume(GameObject item)
     {
-        GetComponent<Slider>().value = 1f;
-        Debug.Log(GetComponent<Slider>().value);
-        for (int i = 0; i < 1500; i++)
+        Debug.Log("START");
+        Slider slider = GetComponent<Slider>();
+        slider.value = 2000f;
+        Debug.Log(slider.value);
+        float totalTime = 20f;
+        float endTime = Time.time + totalTime;
+
+        while (Time.time < endTime)
         {
-            GetComponent<Slider>().value -= 0.0006f;
-            yield return new WaitForSeconds(0.01f);
+            float remainingTime = endTime - Time.time; 
+            slider.value = 2000f * (remainingTime / totalTime); 
+            yield return null; 
         }
+
+        Destroy(slider);
+        Destroy(item);
+ 
     }
 
 }

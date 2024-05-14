@@ -113,7 +113,7 @@ public class MainCharacter : BaseClassCharacter
         isDashing = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    /*private void OnCollisionEnter2D(Collision2D collision)
     {
 
         if (collision.gameObject.tag.Equals("npc") && NPCSpawnVariables.spawning == false)
@@ -121,7 +121,7 @@ public class MainCharacter : BaseClassCharacter
             Destroy(collision.gameObject);
             NPCSpawnVariables.npcsalive -= 1;
         }
-    }
+    }*/
 
    public void IncreaseSpeed()
     {

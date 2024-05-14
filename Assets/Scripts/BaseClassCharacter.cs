@@ -16,17 +16,23 @@ public class BaseClassCharacter : MonoBehaviour
     public BaseClassCharacter()
     {
         health = 300;
-        
+
     }
 
     public void getPunched(int enemy_damage)
     {
         health -= enemy_damage;
+
     }
 
     public int getHealth()
     {
         return health;
+
     }
+
+
+
     
+
 }

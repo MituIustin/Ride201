@@ -35,7 +35,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         changeDirectionTime = UnityEngine.Random.Range(5f, 20f);
-        directionTimer = changeDirectionTime;
+        directionTimer = 500f;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         SetInitialOrientation();
         StartCoroutine(GetOnBus());
@@ -58,13 +58,10 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
     IEnumerator GetOnBus()
     {
-        Vector2 movement = new Vector2(currentDirection * 5, rb.velocity.y);
+        Vector2 movement = new Vector2(currentDirection * 8, rb.velocity.y);
         rb.velocity = movement;
         yield return new WaitForSeconds(0.1f);
         ok = true;
-
-    
-        
 
     }
     void ChangeDirection()
@@ -133,6 +130,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
             transform.position = new Vector2(transform.position.x, transform.position.y + 3f);
             NPCSpawnVariables.npcsalive += 1;
             got_on_bus = true;
+            directionTimer = changeDirectionTime;
             GameObject canvasObject = new GameObject("Canvas");
 
             // Add Canvas component

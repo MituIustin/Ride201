@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCController : MonoBehaviour
+public class NPCController : BaseClassCharacter
 {
     GameObject Player;
 
@@ -14,30 +14,29 @@ public class NPCController : MonoBehaviour
     List<GameObject> npcs = new List<GameObject>();
     Collider2D col;
     SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
 
 
     void Start()
     {
         Player = GameObject.Find("player");
-        GameObject[] npcObjects = GameObject.FindGameObjectsWithTag("npc");
-        col = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        foreach (GameObject npc in npcObjects)
-        {
-            npcs.Add(npc);
-        }
-
-        foreach (GameObject npc in npcs)
-        {
-            Collider2D npcCollider = npc.GetComponent<Collider2D>();
-            Physics2D.IgnoreCollision(npcCollider, col);
-
-        }
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
 
     void Update()
     {
+        if (base.getHealth() <= 0)
+        {
+            Debug.Log(base.getHealth());
+            NPCSpawnVariables.npcsalive -= 1;
+            Destroy(gameObject);
+        }
+
+
         transform.position = Vector2.MoveTowards(transform.position,
                                                 Player.transform.position,
                                                 2f * Time.deltaTime);
@@ -75,14 +74,71 @@ public class NPCController : MonoBehaviour
         Destroy(gameObject);
     }
 
+
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(other.gameObject); // bogos
+
         if (other.gameObject.CompareTag("tp_trigger") && NPCSpawnVariables.spawning == true)
         {
             transform.position = new Vector2(transform.position.x, transform.position.y + 3f);
             NPCSpawnVariables.npcsalive += 1;
             got_on_bus = true;
         }
+        else
+        {
+            if (other.gameObject.CompareTag("punch"))
+            {
+               
+                StartCoroutine(HandlePunch(other));
+
+            }
+            else
+            {
+                GameObject[] npcObjects = GameObject.FindGameObjectsWithTag("npc");
+                foreach (GameObject npc in npcObjects)
+                {
+                    npcs.Add(npc);
+                }
+
+                foreach (GameObject npc in npcs)
+                {
+                    if (npc != null)
+                    {
+                        Collider2D npcCollider = npc.GetComponent<Collider2D>();
+                        Physics2D.IgnoreCollision(npcCollider, col);
+                    }
+                }
+            }
+        }
     }
-}
+
+    private IEnumerator FlashRed()
+    {
+        spriteRenderer.color = Color.red;   // Change color to red 
+        yield return new WaitForSeconds(0.5f);  // Wait for 0.5 seconds
+        spriteRenderer.color = Color.white; // Reset color to normal
+    }
+
+
+    private IEnumerator HandlePunch(Collider2D other)
+        {
+            // Optional: Add a delay before applying the punch effects
+            yield return new WaitForSeconds(0.2f); // Adjust the delay time as needed
+
+            // Apply the punch effects
+            base.getPunched(100);
+
+            // Apply knockback
+            Vector2 direction = (transform.position - other.transform.position).normalized;
+            direction += new Vector2(0, 1).normalized;
+            Vector2 knockback = direction.normalized * 5f;
+            rb.AddForce(knockback, ForceMode2D.Impulse);
+
+            // Start the flash red coroutine
+            StartCoroutine(FlashRed());
+        }
+
+ }
+
 

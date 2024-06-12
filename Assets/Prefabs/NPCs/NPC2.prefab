@@ -173,3 +173,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1
   changeDirectionTime: 0
+  slider: {fileID: 3757498512086387175, guid: 8493290f2535da14d9b4c3208f8dd9e3, type: 3}

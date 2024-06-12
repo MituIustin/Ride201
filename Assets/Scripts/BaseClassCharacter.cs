@@ -10,4 +10,29 @@ public class BaseClassCharacter : MonoBehaviour
     public int Damage { get; set; }
     public bool Attack { get; set; }
     public bool Hostile { get; set; }
+
+    int health = 300;
+
+    public BaseClassCharacter()
+    {
+        health = 300;
+
+    }
+
+    public void getPunched(int enemy_damage)
+    {
+        health -= enemy_damage;
+
+    }
+
+    public int getHealth()
+    {
+        return health;
+
+    }
+
+
+
+
+
 }

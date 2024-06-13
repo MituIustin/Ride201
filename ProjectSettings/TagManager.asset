@@ -9,6 +9,9 @@ TagManager:
   - npc
   - wall
   - tp_trigger
+  - ground
+  - scrollView
+  - punch
   layers:
   - Default
   - TransparentFX
@@ -18,7 +21,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - grd
   - 
   - 
   - 

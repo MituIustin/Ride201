@@ -23,8 +23,11 @@ public class NPCControllerNonHostile : BaseClassCharacter
     private float directionTimer;
     private int currentDirection = -1;
     private GameObject healthbar;
+    private bool isFalling = false;
+
 
     public GameObject slider;
+    private List<Collider2D> ignoredColliders = new List<Collider2D>();
 
 
 
@@ -57,8 +60,21 @@ public class NPCControllerNonHostile : BaseClassCharacter
     }
 
     IEnumerator GetOnBus()
-    {
-        Vector2 movement = new Vector2(currentDirection * 8, rb.velocity.y);
+    {   // fara coliziuni pana urca in autobuz plus viteza mai mare
+        speed = 5f;
+        GameObject[] taggedObjects = GameObject.FindGameObjectsWithTag("npc");
+     
+
+        foreach (GameObject obj in taggedObjects)
+        {
+            Collider2D collider = obj.GetComponent<Collider2D>();
+            if (collider != null)
+            {
+                Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collider, true);
+                ignoredColliders.Add(collider);
+            }
+        }
+        Vector2 movement = new Vector2(currentDirection * speed, rb.velocity.y);
         rb.velocity = movement;
         yield return new WaitForSeconds(0.1f);
         ok = true;
@@ -82,11 +98,11 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
     void Update()
     {
-        if (base.getHealth() <= 0)
+        if (base.getHealth() <= 0 && !isFalling)
         {
             Debug.Log(base.getHealth());
             NPCSpawnVariables.npcsalive -= 1;
-            Destroy(gameObject);
+            StartCoroutine(FallAndDie()); 
         }
 
         if (healthbar)
@@ -113,13 +129,14 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
         if (got_on_bus == false && NPCSpawnVariables.spawning == false)
         {  //scapam de npcuri ramase afara
+            speed = 0f;
             transform.position -= new Vector3(leaving_speed, 0, 0) * Time.deltaTime;
-            leaving_speed += 0.005f;
+            leaving_speed += 0.01f;
 
             if (!isDestructionStarted)
             {
                 isDestructionStarted = true;
-                StartCoroutine(DestroyAfterDelay(5)); // 5 seconds delay
+                StartCoroutine(DestroyAfterDelay(15)); // 15 seconds delay
             }
         }
     }
@@ -130,7 +147,22 @@ public class NPCControllerNonHostile : BaseClassCharacter
             transform.position = new Vector2(transform.position.x, transform.position.y + 3f);
             NPCSpawnVariables.npcsalive += 1;
             got_on_bus = true;
+
+            //ii lasam sa se invarta normal dupa ce urca si la viteza normala
             directionTimer = changeDirectionTime;
+            speed = 1f;
+
+
+            /*aducem coliziunile inapoi
+            if(ignoredColliders.Count > 0)
+                foreach (Collider2D collider in ignoredColliders)
+                    {
+                     Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collider, false);
+                    }
+            */
+
+            //HEALTHBAR
+
             GameObject canvasObject = new GameObject("Canvas");
 
             // Add Canvas component
@@ -210,6 +242,46 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
         // Start the flash red coroutine
         StartCoroutine(FlashRed());
+    }
+    private IEnumerator FallAndDie()
+    {
+        isFalling = true;
+
+
+        if (healthbar != null)
+        {
+            Destroy(healthbar.gameObject);
+        }
+
+        // Duration of the fall animation
+        float fallDuration = 0.5f;
+
+        // Initial and target rotation
+        Quaternion initialRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z + 90);
+
+        // Initial and target position
+        Vector3 initialPosition = transform.position;
+        Vector3 targetPosition = transform.position + new Vector3(0, -0.5f, 0); // Adjust the fall distance as needed
+
+        // Timer
+        float elapsedTime = 0;
+
+        // Animate the fall
+        while (elapsedTime < fallDuration)
+        {
+            transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / fallDuration);
+            transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / fallDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final position and rotation are set
+        transform.rotation = targetRotation;
+        transform.position = targetPosition;
+
+        // Destroy the game object after the animation
+        Destroy(gameObject);
     }
 
 }

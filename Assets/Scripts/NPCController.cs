@@ -15,6 +15,7 @@ public class NPCController : BaseClassCharacter
     Collider2D col;
     SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
+    private bool isFalling = false;
 
 
     void Start()
@@ -29,11 +30,11 @@ public class NPCController : BaseClassCharacter
 
     void Update()
     {
-        if (base.getHealth() <= 0)
+        if (base.getHealth() <= 0 && !isFalling)
         {
             Debug.Log(base.getHealth());
             NPCSpawnVariables.npcsalive -= 1;
-            Destroy(gameObject);
+            StartCoroutine(FallAndDie());
         }
 
 
@@ -44,12 +45,12 @@ public class NPCController : BaseClassCharacter
         if (got_on_bus == false && NPCSpawnVariables.spawning == false)
         {  //scapam de npcuri ramase afara
             transform.position -= new Vector3(leaving_speed, 0, 0) * Time.deltaTime;
-            leaving_speed += 0.005f;
+            leaving_speed += 0.01f;
 
             if (!isDestructionStarted)
             {
                 isDestructionStarted = true;
-                StartCoroutine(DestroyAfterDelay(5)); // 5 seconds delay
+                StartCoroutine(DestroyAfterDelay(15)); // 15 seconds delay
             }
         }
         Vector3 vec = new Vector3(transform.position.x, transform.position.y, 3);
@@ -139,6 +140,42 @@ public class NPCController : BaseClassCharacter
             StartCoroutine(FlashRed());
         }
 
- }
+    private IEnumerator FallAndDie()
+    {
+        isFalling = true;
+
+
+        // Duration of the fall animation
+        float fallDuration = 0.5f;
+
+        // Initial and target rotation
+        Quaternion initialRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z + 90);
+
+        // Initial and target position
+        Vector3 initialPosition = transform.position;
+        Vector3 targetPosition = transform.position + new Vector3(0, -0.5f, 0); // Adjust the fall distance as needed
+
+        // Timer
+        float elapsedTime = 0;
+
+        // Animate the fall
+        while (elapsedTime < fallDuration)
+        {
+            transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / fallDuration);
+            transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / fallDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final position and rotation are set
+        transform.rotation = targetRotation;
+        transform.position = targetPosition;
+
+        // Destroy the game object after the animation
+        Destroy(gameObject);
+    }
+
+}
 
 

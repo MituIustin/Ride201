@@ -305,7 +305,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: background 2 (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2298733656414259765, guid: ed9be69f417767545b1173d75ea45639, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -990,7 +991,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: background 2 (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2298733656414259765, guid: ed9be69f417767545b1173d75ea45639, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

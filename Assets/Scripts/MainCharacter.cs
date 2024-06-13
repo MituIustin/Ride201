@@ -136,7 +136,8 @@ public class MainCharacter : BaseClassCharacter
         // Re-enable collisions after the dash
         foreach (Collider2D collider in ignoredColliders)
         {
-            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collider, false);
+            if (collider != null)
+                Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collider, false);
         }
 
         yield return new WaitForSeconds(dashCooldown);

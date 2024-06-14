@@ -15,6 +15,7 @@ public class MainCharacter : BaseClassCharacter
     public float dashDuration = 0.2f;
     public float dashCooldown = 2f;
     private bool isDashing = false;
+    private SpriteRenderer spriteRenderer;
 
     private Vector3 dashDirection;
     private Rigidbody2D rb;
@@ -35,6 +36,7 @@ public class MainCharacter : BaseClassCharacter
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = rb.GetComponent<SpriteRenderer>(); 
         MainChrConstructor();
         facingRight = true;
         wasGrounded = checkGrd();
@@ -48,6 +50,8 @@ public class MainCharacter : BaseClassCharacter
 
     private void Update()
     {
+        animator.SetFloat("Health", base.getHealth());
+        Debug.Log(base.getHealth());
         bool isGrounded = checkGrd();
         //moving direction
         horizontalMove = Input.GetAxis("Horizontal") * Speed;
@@ -168,4 +172,12 @@ public class MainCharacter : BaseClassCharacter
 
         Speed = 20f;
     }
+
+    public IEnumerator FlashRed()
+    {
+        spriteRenderer.color = Color.red;   // Change color to red 
+        yield return new WaitForSeconds(0.5f);  // Wait for 0.5 seconds
+        spriteRenderer.color = Color.white; // Reset color to normal
+    }
+
 }

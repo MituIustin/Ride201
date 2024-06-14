@@ -11,13 +11,16 @@ public class MainCharacter : BaseClassCharacter
     public float horizontalMove;
     private bool facingRight;
     public bool jump = false;
-    public float dashDistance = 3f; 
-    public float dashDuration = 0.2f; 
+    public float dashDistance = 3f;
+    public float dashDuration = 0.2f;
     public float dashCooldown = 2f;
     private bool isDashing = false;
 
     private Vector3 dashDirection;
     private Rigidbody2D rb;
+    public Animator animator;
+
+    private bool wasGrounded;
 
     // Start is called before the first frame update
     void MainChrConstructor()
@@ -34,37 +37,33 @@ public class MainCharacter : BaseClassCharacter
         rb = GetComponent<Rigidbody2D>();
         MainChrConstructor();
         facingRight = true;
+        wasGrounded = checkGrd();
     }
 
     private bool checkGrd()
     {
-        try
-        {
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.5f, LayerMask.GetMask("grd"));
-            if (hit.collider.CompareTag("ground"))
-            {
-                return true;
-            }
-        }
-        catch (Exception e)
-        {
-        }
-        return false;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.5f, LayerMask.GetMask("grd"));
+        return hit.collider != null && hit.collider.CompareTag("ground");
     }
 
     private void Update()
-    {   
+    {
+        bool isGrounded = checkGrd();
         //moving direction
         horizontalMove = Input.GetAxis("Horizontal") * Speed;
+        animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
         // Rotating
         if (horizontalMove < 0f) transform.localEulerAngles = new Vector3(0, 180, 0);
         if (horizontalMove > 0f) transform.localEulerAngles = new Vector3(0, 0, 0);
 
         // Jumping
-        if (Input.GetKeyDown(KeyCode.Space) && GetComponent<BoxCollider2D>().IsTouchingLayers())
+        if (Input.GetKeyDown(KeyCode.Space) && checkGrd())
+        {
             jump = true;
-        if (Input.GetKeyDown(KeyCode.Z))
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z) && !isGrounded)
         {
             float horizontalInput = Input.GetAxis("Horizontal");
             dashDirection = new Vector3(horizontalInput, 0f, transform.position.y).normalized;
@@ -74,7 +73,14 @@ public class MainCharacter : BaseClassCharacter
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
             facingRight = true;
         else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-            facingRight = false; 
+            facingRight = false;
+
+        // Update jumping animation state only when grounded state changes
+        if (isGrounded != wasGrounded)
+        {
+            animator.SetBool("CanJump", !isGrounded);
+            wasGrounded = isGrounded;
+        }
     }
 
     private void FixedUpdate()
@@ -89,41 +95,56 @@ public class MainCharacter : BaseClassCharacter
         if (canjump && checkGrd())
         {
             rb.AddForce(new Vector2(0, jumpForce));
-            jump = !canjump;
+            jump = false; // Reset jump after applying force
         }
     }
 
     IEnumerator Dash()
     {
         isDashing = true;
+        animator.SetBool("CanDash", true);
+
+        // Find all colliders with the specific tag
+        GameObject[] taggedObjects = GameObject.FindGameObjectsWithTag("npc");
+        List<Collider2D> ignoredColliders = new List<Collider2D>();
+
+        foreach (GameObject obj in taggedObjects)
+        {
+            Collider2D collider = obj.GetComponent<Collider2D>();
+            if (collider != null)
+            {
+                Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collider, true);
+                ignoredColliders.Add(collider);
+            }
+        }
+
         Vector3 startPos = transform.position;
-        Vector3 endPos;
-        if(facingRight)
-            endPos = new Vector3(transform.position.x + dashDistance, transform.position.y, transform.position.z);
-        else
-            endPos = new Vector3(transform.position.x - dashDistance, transform.position.y, transform.position.z);
+        Vector3 endPos = facingRight
+            ? new Vector3(transform.position.x + dashDistance, transform.position.y, transform.position.z)
+            : new Vector3(transform.position.x - dashDistance, transform.position.y, transform.position.z);
+
         float startTime = Time.time;
         while (Time.time < startTime + dashDuration)
         {
             rb.MovePosition(Vector3.Lerp(startPos, endPos, (Time.time - startTime) / dashDuration));
             yield return null;
         }
+
         rb.MovePosition(endPos);
+        animator.SetBool("CanDash", false);
+
+        // Re-enable collisions after the dash
+        foreach (Collider2D collider in ignoredColliders)
+        {
+            if (collider != null)
+                Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collider, false);
+        }
+
         yield return new WaitForSeconds(dashCooldown);
         isDashing = false;
     }
 
-    /*private void OnCollisionEnter2D(Collision2D collision)
-    {
-
-        if (collision.gameObject.tag.Equals("npc") && NPCSpawnVariables.spawning == false)
-        {
-            Destroy(collision.gameObject);
-            NPCSpawnVariables.npcsalive -= 1;
-        }
-    }*/
-
-   public void IncreaseSpeed()
+    public void IncreaseSpeed()
     {
         StartCoroutine(ChangeSpeed());
     }
@@ -146,7 +167,5 @@ public class MainCharacter : BaseClassCharacter
         Debug.Log("FARA VITEZA");
 
         Speed = 20f;
-
-
     }
 }

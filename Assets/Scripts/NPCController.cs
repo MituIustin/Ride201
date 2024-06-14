@@ -15,6 +15,8 @@ public class NPCController : BaseClassCharacter
     Collider2D col;
     SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
+    private bool isFalling = false;
+
 
 
     void Start()
@@ -23,18 +25,18 @@ public class NPCController : BaseClassCharacter
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
 
     void Update()
     {
-        if(base.getHealth() <= 0)
+        if (base.getHealth() <= 0 && !isFalling)
         {
             Debug.Log(base.getHealth());
             NPCSpawnVariables.npcsalive -= 1;
-            Destroy(gameObject);
+            StartCoroutine(FallAndDie());
         }
-        
 
         transform.position = Vector2.MoveTowards(transform.position,
                                                 Player.transform.position,
@@ -43,12 +45,12 @@ public class NPCController : BaseClassCharacter
         if (got_on_bus == false && NPCSpawnVariables.spawning == false)
         {  //scapam de npcuri ramase afara
             transform.position -= new Vector3(leaving_speed, 0, 0) * Time.deltaTime;
-            leaving_speed += 0.005f;
+            leaving_speed += 0.01f;
 
             if (!isDestructionStarted)
             {
                 isDestructionStarted = true;
-                StartCoroutine(DestroyAfterDelay(5)); // 5 seconds delay
+                StartCoroutine(DestroyAfterDelay(15)); // 15 seconds delay
             }
         }
         Vector3 vec = new Vector3(transform.position.x, transform.position.y, 3);
@@ -73,7 +75,6 @@ public class NPCController : BaseClassCharacter
         Destroy(gameObject);
     }
 
-    
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.gameObject); // bogos
@@ -87,18 +88,8 @@ public class NPCController : BaseClassCharacter
         else
         {
             if (other.gameObject.CompareTag("punch"))
-            {
-                base.getPunched(100);
-
-                // Apply knockback
-                Vector2 direction = (transform.position - Player.transform.position).normalized;
-                direction += new Vector2(0, 1).normalized;
-                Vector2 knockback = direction.normalized * 5f;
-                rb.AddForce(knockback, ForceMode2D.Impulse);
-
-                // Start the flash red coroutine
-                StartCoroutine(FlashRed());
-
+            { 
+                StartCoroutine(HandlePunch(other));
             }
             else
             {
@@ -127,5 +118,62 @@ public class NPCController : BaseClassCharacter
         spriteRenderer.color = Color.white; // Reset color to normal
     }
 
+
+    private IEnumerator HandlePunch(Collider2D other)
+        {
+            // Optional: Add a delay before applying the punch effects
+            yield return new WaitForSeconds(0.2f); // Adjust the delay time as needed
+
+            // Apply the punch effects
+            base.getPunched(100);
+
+            // Apply knockback
+            Vector2 direction = (transform.position - other.transform.position).normalized;
+            direction += new Vector2(0, 1).normalized;
+            Vector2 knockback = direction.normalized * 5f;
+            rb.AddForce(knockback, ForceMode2D.Impulse);
+
+            // Start the flash red coroutine
+            StartCoroutine(FlashRed());
+        }
+
+    private IEnumerator FallAndDie()
+    {
+        isFalling = true;
+
+
+        // Duration of the fall animation
+        float fallDuration = 0.5f;
+
+        // Initial and target rotation
+        Quaternion initialRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z + 90);
+
+        // Initial and target position
+        Vector3 initialPosition = transform.position;
+        Vector3 targetPosition = transform.position + new Vector3(0, -0.5f, 0); // Adjust the fall distance as needed
+
+        // Timer
+        float elapsedTime = 0;
+
+        // Animate the fall
+        while (elapsedTime < fallDuration)
+        {
+            transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / fallDuration);
+            transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / fallDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final position and rotation are set
+        transform.rotation = targetRotation;
+        transform.position = targetPosition;
+
+        // Destroy the game object after the animation
+        Destroy(gameObject);
+
+    }
+
 }
+
 

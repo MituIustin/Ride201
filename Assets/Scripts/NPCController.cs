@@ -13,7 +13,6 @@ public class NPCController : BaseClassCharacter
     private bool isDestructionStarted = false;
 
     public Animator anim;
-    public Animator player_anim;
 
     List<GameObject> npcs = new List<GameObject>();
     Collider2D col;
@@ -22,7 +21,7 @@ public class NPCController : BaseClassCharacter
     private bool isFalling = false;
 
     // Define the distance at which the NPC will attack the player
-    public float attackDistance = 1.0f;
+    public float attackDistance = 1.7f;
     // Define the attack cooldown to avoid multiple attacks in a short time
     private float attackCooldown = 1.5f;
     private float lastAttackTime;
@@ -30,7 +29,6 @@ public class NPCController : BaseClassCharacter
     void Start()
     {
         Player = GameObject.Find("player");
-        player_anim = Player.GetComponent<Animator>();  
 
         if (Player != null)
         {
@@ -58,12 +56,14 @@ public class NPCController : BaseClassCharacter
             NPCSpawnVariables.npcsalive -= 1;
             StartCoroutine(FallAndDie());
         }
-
-        // Move towards the player
-        transform.position = Vector2.MoveTowards(transform.position,
-                                                 Player.transform.position,
-                                                 2f * Time.deltaTime);
-
+        if (NPCSpawnVariables.spawning == false)
+        {
+            anim.SetFloat("Distance_To_Player", Vector2.Distance(transform.position, Player.transform.position));
+        }
+        else
+        {
+            anim.SetFloat("Distance_To_Player", 1000f);  //sa nu atace cat e imbarcare
+        }
         // Check distance to the player and call the Attack function if close enough
         if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance && NPCSpawnVariables.spawning == false)
         {
@@ -88,12 +88,15 @@ public class NPCController : BaseClassCharacter
         }
 
         // Ensure the NPC is always in front of other objects
-        Vector3 vec = new Vector3(transform.position.x, transform.position.y, 3);
+        Vector3 vec = new Vector3(transform.position.x, transform.position.y, -0.5f);
         transform.position = vec;
 
         // Move on the same Y-axis as the player
-        Vector3 v = new Vector3(Player.transform.position.x, transform.position.y, 3f);
-        transform.position = Vector3.MoveTowards(transform.position, v, 2f * Time.deltaTime);
+        if (Vector2.Distance(transform.position, Player.transform.position) >= attackDistance - 0.2f)
+        {
+            Vector3 v = new Vector3(Player.transform.position.x, transform.position.y, 3f);
+            transform.position = Vector3.MoveTowards(transform.position, v, 2f * Time.deltaTime);
+        }
 
         // Flip the sprite based on the direction to the player
         spriteRenderer.flipX = transform.position.x > Player.transform.position.x;
@@ -223,23 +226,21 @@ public class NPCController : BaseClassCharacter
     {
         Debug.Log("NPC is attacking the player!");
 
-        // Set the attack trigger
-        anim.SetTrigger("attack");
-
         // Check the distance and apply damage if close enough
-        if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance + 0.1f)
-        {
-            //player_anim.SetBool("IsHurt", true);
+        if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance - 0.1f)
+        {   
             ApplyDamageToPlayer(50); // Aplica damage de 50 player-ului
+            MainCharacter playerMainCharacter = Player.GetComponent<MainCharacter>();
+            playerMainCharacter.StartCoroutine(playerMainCharacter.FlashRed()); //facem playerul rosu
 
         }
 
         // Start the coroutine to reset the trigger
         StartCoroutine(ResetAttackTrigger());
-       // player_anim.SetBool("IsHurt", false); //daca nu a nimerit seteaza false oricum
+       
         if (baseClassPlayer.getHealth() <= 0)
         {
-            Destroy(Player);
+            StartCoroutine(DestroyPlayerAfterDelay(1f));
         }
     }
 
@@ -249,7 +250,11 @@ public class NPCController : BaseClassCharacter
         // Wait for the duration of the attack animation
         yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
 
-        // Reset the attack trigger
-        anim.ResetTrigger("attack");
+    }
+
+    private IEnumerator DestroyPlayerAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(Player);
     }
 }

@@ -1,15 +1,18 @@
-using Assets;
+﻿using Assets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NPCController : BaseClassCharacter
 {
-    GameObject Player;
+    public GameObject Player;
+    private BaseClassCharacter baseClassPlayer;
 
     private bool got_on_bus = false;
     private float leaving_speed = 0f;
     private bool isDestructionStarted = false;
+
+    public Animator anim;
 
     List<GameObject> npcs = new List<GameObject>();
     Collider2D col;
@@ -17,17 +20,31 @@ public class NPCController : BaseClassCharacter
     private Rigidbody2D rb;
     private bool isFalling = false;
 
-
+    // Define the distance at which the NPC will attack the player
+    public float attackDistance = 1.0f;
+    // Define the attack cooldown to avoid multiple attacks in a short time
+    private float attackCooldown = 1.5f;
+    private float lastAttackTime;
 
     void Start()
     {
         Player = GameObject.Find("player");
+        if (Player != null)
+        {
+            // Obține componenta BaseClassCharacter de la player
+            baseClassPlayer = Player.GetComponent<BaseClassCharacter>();
+        }
+        else
+        {
+            Debug.LogError("Player object not found!");
+        }
+
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        lastAttackTime = -attackCooldown; // Initialize to allow immediate attack
     }
-
 
     void Update()
     {
@@ -38,12 +55,24 @@ public class NPCController : BaseClassCharacter
             StartCoroutine(FallAndDie());
         }
 
+        // Move towards the player
         transform.position = Vector2.MoveTowards(transform.position,
-                                                Player.transform.position,
-                                                2f * Time.deltaTime);
+                                                 Player.transform.position,
+                                                 2f * Time.deltaTime);
 
-        if (got_on_bus == false && NPCSpawnVariables.spawning == false)
-        {  //scapam de npcuri ramase afara
+        // Check distance to the player and call the Attack function if close enough
+        if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance && NPCSpawnVariables.spawning == false)
+        {
+            if (Time.time > lastAttackTime + attackCooldown)
+            {
+                Attack();
+                lastAttackTime = Time.time;
+            }
+        }
+
+        // Move away from bus if conditions are met
+        if (!got_on_bus && !NPCSpawnVariables.spawning)
+        {
             transform.position -= new Vector3(leaving_speed, 0, 0) * Time.deltaTime;
             leaving_speed += 0.01f;
 
@@ -53,22 +82,20 @@ public class NPCController : BaseClassCharacter
                 StartCoroutine(DestroyAfterDelay(15)); // 15 seconds delay
             }
         }
+
+        // Ensure the NPC is always in front of other objects
         Vector3 vec = new Vector3(transform.position.x, transform.position.y, 3);
         transform.position = vec;
+
+        // Move on the same Y-axis as the player
         Vector3 v = new Vector3(Player.transform.position.x, transform.position.y, 3f);
         transform.position = Vector3.MoveTowards(transform.position, v, 2f * Time.deltaTime);
 
-        if (transform.position.x < Player.transform.position.x)
-        {
-            spriteRenderer.flipX = true;
-        }
-        else
-        {
-            spriteRenderer.flipX = false;
-        }
+        // Flip the sprite based on the direction to the player
+        spriteRenderer.flipX = transform.position.x < Player.transform.position.x;
     }
 
-
+    // Coroutine to destroy the NPC after a delay
     IEnumerator DestroyAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -79,7 +106,7 @@ public class NPCController : BaseClassCharacter
     {
         Debug.Log(other.gameObject); // bogos
 
-        if (other.gameObject.CompareTag("tp_trigger") && NPCSpawnVariables.spawning == true)
+        if (other.gameObject.CompareTag("tp_trigger") && NPCSpawnVariables.spawning)
         {
             transform.position = new Vector2(transform.position.x, transform.position.y + 3f);
             NPCSpawnVariables.npcsalive += 1;
@@ -88,7 +115,7 @@ public class NPCController : BaseClassCharacter
         else
         {
             if (other.gameObject.CompareTag("punch"))
-            { 
+            {
                 StartCoroutine(HandlePunch(other));
             }
             else
@@ -111,6 +138,7 @@ public class NPCController : BaseClassCharacter
         }
     }
 
+    // Coroutine to flash the NPC red
     private IEnumerator FlashRed()
     {
         spriteRenderer.color = Color.red;   // Change color to red 
@@ -118,29 +146,28 @@ public class NPCController : BaseClassCharacter
         spriteRenderer.color = Color.white; // Reset color to normal
     }
 
-
+    // Coroutine to handle punch interaction
     private IEnumerator HandlePunch(Collider2D other)
-        {
-            // Optional: Add a delay before applying the punch effects
-            yield return new WaitForSeconds(0.2f); // Adjust the delay time as needed
+    {
+        yield return new WaitForSeconds(0.2f); // Adjust the delay time as needed
 
-            // Apply the punch effects
-            base.getPunched(100);
+        // Apply the punch effects
+        base.getPunched(100);
 
-            // Apply knockback
-            Vector2 direction = (transform.position - other.transform.position).normalized;
-            direction += new Vector2(0, 1).normalized;
-            Vector2 knockback = direction.normalized * 5f;
-            rb.AddForce(knockback, ForceMode2D.Impulse);
+        // Apply knockback
+        Vector2 direction = (transform.position - other.transform.position).normalized;
+        direction += new Vector2(0, 1).normalized;
+        Vector2 knockback = direction.normalized * 5f;
+        rb.AddForce(knockback, ForceMode2D.Impulse);
 
-            // Start the flash red coroutine
-            StartCoroutine(FlashRed());
-        }
+        // Start the flash red coroutine
+        StartCoroutine(FlashRed());
+    }
 
+    // Coroutine to handle falling and dying
     private IEnumerator FallAndDie()
     {
         isFalling = true;
-
 
         // Duration of the fall animation
         float fallDuration = 0.5f;
@@ -171,9 +198,51 @@ public class NPCController : BaseClassCharacter
 
         // Destroy the game object after the animation
         Destroy(gameObject);
-
     }
 
+    // Metodă pentru a aplica damage player-ului
+    private void ApplyDamageToPlayer(int damage)
+    {
+        if (baseClassPlayer != null)
+        {
+            baseClassPlayer.getPunched(damage); // Aplică damage player-ului
+            Debug.Log("Player health reduced by " + damage);
+        }
+        else
+        {
+            Debug.LogError("Player BaseClassCharacter not found!");
+        }
+    }
+
+    // Define the Attack function
+    private void Attack()
+    {
+        Debug.Log("NPC is attacking the player!");
+
+        // Set the attack trigger
+        anim.SetTrigger("attack");
+
+        // Check the distance and apply damage if close enough
+        if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance + 0.1f)
+        {
+            ApplyDamageToPlayer(50); // Aplica damage de 50 player-ului
+        }
+
+        // Start the coroutine to reset the trigger
+        StartCoroutine(ResetAttackTrigger());
+        if(baseClassPlayer.getHealth() <= 0)
+        {
+            Destroy(Player);
+        }
+    }
+
+    // Coroutine to reset the attack trigger
+    private IEnumerator ResetAttackTrigger()
+    {
+        // Wait for the duration of the attack animation
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+
+        // Reset the attack trigger
+        anim.ResetTrigger("attack");
+    }
 }
-
-

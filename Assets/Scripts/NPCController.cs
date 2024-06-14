@@ -18,6 +18,7 @@ public class NPCController : BaseClassCharacter
     private bool isFalling = false;
 
 
+
     void Start()
     {
         Player = GameObject.Find("player");
@@ -36,7 +37,6 @@ public class NPCController : BaseClassCharacter
             NPCSpawnVariables.npcsalive -= 1;
             StartCoroutine(FallAndDie());
         }
-
 
         transform.position = Vector2.MoveTowards(transform.position,
                                                 Player.transform.position,
@@ -75,7 +75,6 @@ public class NPCController : BaseClassCharacter
         Destroy(gameObject);
     }
 
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.gameObject); // bogos
@@ -89,10 +88,8 @@ public class NPCController : BaseClassCharacter
         else
         {
             if (other.gameObject.CompareTag("punch"))
-            {
-               
+            { 
                 StartCoroutine(HandlePunch(other));
-
             }
             else
             {
@@ -174,6 +171,7 @@ public class NPCController : BaseClassCharacter
 
         // Destroy the game object after the animation
         Destroy(gameObject);
+
     }
 
 }

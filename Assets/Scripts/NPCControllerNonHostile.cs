@@ -1,8 +1,10 @@
 using Assets;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class NPCControllerNonHostile : BaseClassCharacter
 {
@@ -78,7 +80,6 @@ public class NPCControllerNonHostile : BaseClassCharacter
         rb.velocity = movement;
         yield return new WaitForSeconds(0.1f);
         ok = true;
-
     }
     void ChangeDirection()
     {
@@ -226,6 +227,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
         spriteRenderer.color = Color.white; // Reset color to normal
     }
 
+
     private IEnumerator HandlePunch(Collider2D other)
     {
         // Optional: Add a delay before applying the punch effects
@@ -285,5 +287,4 @@ public class NPCControllerNonHostile : BaseClassCharacter
     }
 
 }
-
 

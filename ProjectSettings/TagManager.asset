@@ -7,6 +7,7 @@ TagManager:
   - player
   - background(for trigger)
   - npc
+  - scrollView
   - wall
   - tp_trigger
   - ground
@@ -23,7 +24,7 @@ TagManager:
   - 
   - grd
   - 
-  - 
+  -
   - 
   - 
   - 

@@ -144,7 +144,6 @@ public class MainCharacter : BaseClassCharacter
         isDashing = false;
     }
 
-
     public void IncreaseSpeed()
     {
         StartCoroutine(ChangeSpeed());

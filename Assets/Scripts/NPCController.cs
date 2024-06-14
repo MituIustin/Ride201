@@ -13,6 +13,7 @@ public class NPCController : BaseClassCharacter
     private bool isDestructionStarted = false;
 
     public Animator anim;
+    public Animator player_anim;
 
     List<GameObject> npcs = new List<GameObject>();
     Collider2D col;
@@ -29,6 +30,8 @@ public class NPCController : BaseClassCharacter
     void Start()
     {
         Player = GameObject.Find("player");
+        player_anim = Player.GetComponent<Animator>();  
+
         if (Player != null)
         {
             // Obține componenta BaseClassCharacter de la player
@@ -44,6 +47,7 @@ public class NPCController : BaseClassCharacter
         col = GetComponent<Collider2D>();
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         lastAttackTime = -attackCooldown; // Initialize to allow immediate attack
+
     }
 
     void Update()
@@ -92,7 +96,7 @@ public class NPCController : BaseClassCharacter
         transform.position = Vector3.MoveTowards(transform.position, v, 2f * Time.deltaTime);
 
         // Flip the sprite based on the direction to the player
-        spriteRenderer.flipX = transform.position.x < Player.transform.position.x;
+        spriteRenderer.flipX = transform.position.x > Player.transform.position.x;
     }
 
     // Coroutine to destroy the NPC after a delay
@@ -225,12 +229,15 @@ public class NPCController : BaseClassCharacter
         // Check the distance and apply damage if close enough
         if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance + 0.1f)
         {
+            //player_anim.SetBool("IsHurt", true);
             ApplyDamageToPlayer(50); // Aplica damage de 50 player-ului
+
         }
 
         // Start the coroutine to reset the trigger
         StartCoroutine(ResetAttackTrigger());
-        if(baseClassPlayer.getHealth() <= 0)
+       // player_anim.SetBool("IsHurt", false); //daca nu a nimerit seteaza false oricum
+        if (baseClassPlayer.getHealth() <= 0)
         {
             Destroy(Player);
         }

@@ -20,10 +20,11 @@ public class PunchScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X) && !isPunching && NPCSpawnVariables.spawning == false && rb.velocity.y == 0)
+        if (Input.GetKeyDown(KeyCode.X) && !isPunching && NPCSpawnVariables.spawning == false && animator.GetBool("CanJump") == false)
         {   
             punchObject.SetActive(true);
             StartCoroutine(DeactivatePunchAfterDelay(punchDuration));
+            StartCoroutine(PunchCooldown(0.7f));
         }
     }
 
@@ -35,6 +36,11 @@ public class PunchScript : MonoBehaviour
         punchObject.SetActive(false);
         isPunching = false;
         animator.SetBool("CanPunch", false);
+    }
+
+    IEnumerator PunchCooldown(float cooldown)
+    {
+        yield return new WaitForSeconds(cooldown);
     }
 
 }

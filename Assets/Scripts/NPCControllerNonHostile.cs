@@ -50,7 +50,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
     void SetInitialOrientation()
     {
         Vector3 newScale = transform.localScale;
-        if (currentDirection < 0)
+        if (currentDirection > 0)
         {
             newScale.x = -Mathf.Abs(newScale.x); // Ensure facing left
         }

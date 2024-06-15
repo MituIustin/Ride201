@@ -99,10 +99,11 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
     void Update()
     {
+        NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
         if (base.getHealth() <= 0 && !isFalling)
         {
             Debug.Log(base.getHealth());
-            NPCSpawnVariables.npcsalive -= 1;
+            spawnVariables.npcsalive -= 1;
             StartCoroutine(FallAndDie()); 
         }
 
@@ -128,7 +129,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
         Vector2 movement = new Vector2(currentDirection * speed, rb.velocity.y);
         rb.velocity = movement;
 
-        if (got_on_bus == false && NPCSpawnVariables.spawning == false)
+        if (got_on_bus == false && spawnVariables.spawning == false)
         {  //scapam de npcuri ramase afara
             speed = 0f;
             transform.position -= new Vector3(leaving_speed, 0, 0) * Time.deltaTime;
@@ -142,11 +143,12 @@ public class NPCControllerNonHostile : BaseClassCharacter
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other) { 
-        if (other.gameObject.CompareTag("tp_trigger") && NPCSpawnVariables.spawning == true)
+    private void OnTriggerEnter2D(Collider2D other) {
+        NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
+        if (other.gameObject.CompareTag("tp_trigger") && spawnVariables.spawning == true)
         {
             transform.position = new Vector2(transform.position.x, transform.position.y + 3f);
-            NPCSpawnVariables.npcsalive += 1;
+            spawnVariables.npcsalive += 1;
             got_on_bus = true;
 
             //ii lasam sa se invarta normal dupa ce urca si la viteza normala
@@ -194,7 +196,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
         }
         else
         {
-            if (other.CompareTag("punch") && NPCSpawnVariables.spawning == false)
+            if (other.CompareTag("punch") && spawnVariables.spawning == false)
             {
                 // Start the punch effect coroutine with a delay
                 StartCoroutine(HandlePunch(other));

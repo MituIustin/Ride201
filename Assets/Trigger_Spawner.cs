@@ -17,8 +17,8 @@ public class Trigger_Spawner : MonoBehaviour
     void CreateRoadSection()
     {
 
-        // Check if actual_speed is 7 and roll a 1/20 chance
-        if (MoveLeft.actual_speed == 7 && Random.Range(0, 5) == 0)
+        // Check if actual_speed is 7 and roll a 1/10 chance
+        if (MoveLeft.actual_speed > 6.9f && Random.Range(0, 10) == 0)
         {
             roadSection = roadSection_traffic_light;
         }

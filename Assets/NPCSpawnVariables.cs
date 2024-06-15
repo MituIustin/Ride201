@@ -7,9 +7,29 @@ using UnityEngine;
 
 namespace Assets
 {
-    public static class NPCSpawnVariables
+    public class NPCSpawnVariables
     {
-        public static int npcsalive = 0;
-        public static bool spawning = false;
+        // Static instance of the NPCSpawnVariables class
+        private static NPCSpawnVariables instance;
+
+        // Public property to access the instance
+        public static NPCSpawnVariables Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new NPCSpawnVariables();
+                }
+                return instance;
+            }
+        }
+
+        // Private constructor to prevent instantiation from outside
+        private NPCSpawnVariables() { }
+
+        // Public variables
+        public int npcsalive = 0;
+        public bool spawning = false;
     }
 }

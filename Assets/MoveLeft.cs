@@ -17,10 +17,11 @@ public class MoveLeft : MonoBehaviour
     }
     void Update()
     {
-        if (NPCSpawnVariables.spawning == true && actual_speed > 0f)
+        NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
+        if (spawnVariables.spawning == true && actual_speed > 0f)
             actual_speed -= 0.01f;
 
-        if (NPCSpawnVariables.spawning == false && actual_speed < 7f)
+        if (spawnVariables.spawning == false && actual_speed < 7f)
             actual_speed += 0.01f;
 
 

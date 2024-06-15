@@ -20,7 +20,8 @@ public class PunchScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.X) && !isPunching && NPCSpawnVariables.spawning == false && animator.GetBool("CanJump") == false)
+        NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
+        if (Input.GetKeyDown(KeyCode.X) && !isPunching && spawnVariables.spawning == false && animator.GetBool("CanJump") == false)
         {   
             punchObject.SetActive(true);
             StartCoroutine(DeactivatePunchAfterDelay(punchDuration));

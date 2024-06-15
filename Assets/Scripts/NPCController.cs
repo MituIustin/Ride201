@@ -50,13 +50,14 @@ public class NPCController : BaseClassCharacter
 
     void Update()
     {
+        NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
         if (base.getHealth() <= 0 && !isFalling)
         {
             Debug.Log(base.getHealth());
-            NPCSpawnVariables.npcsalive -= 1;
+            spawnVariables.npcsalive -= 1;
             StartCoroutine(FallAndDie());
         }
-        if (NPCSpawnVariables.spawning == false)
+        if (spawnVariables.spawning == false)
         {
             anim.SetFloat("Distance_To_Player", Vector2.Distance(transform.position, Player.transform.position));
         }
@@ -65,7 +66,7 @@ public class NPCController : BaseClassCharacter
             anim.SetFloat("Distance_To_Player", 1000f);  //sa nu atace cat e imbarcare
         }
         // Check distance to the player and call the Attack function if close enough
-        if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance && NPCSpawnVariables.spawning == false)
+        if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance && spawnVariables.spawning == false)
         {
             if (Time.time > lastAttackTime + attackCooldown)
             {
@@ -75,7 +76,7 @@ public class NPCController : BaseClassCharacter
         }
 
         // Move away from bus if conditions are met
-        if (!got_on_bus && !NPCSpawnVariables.spawning)
+        if (!got_on_bus && !spawnVariables.spawning)
         {
             transform.position -= new Vector3(leaving_speed, 0, 0) * Time.deltaTime;
             leaving_speed += 0.01f;
@@ -112,11 +113,12 @@ public class NPCController : BaseClassCharacter
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.gameObject); // bogos
+        NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
 
-        if (other.gameObject.CompareTag("tp_trigger") && NPCSpawnVariables.spawning)
+        if (other.gameObject.CompareTag("tp_trigger") && spawnVariables.spawning)
         {
             transform.position = new Vector2(transform.position.x, transform.position.y + 3f);
-            NPCSpawnVariables.npcsalive += 1;
+            spawnVariables.npcsalive += 1;
             got_on_bus = true;
         }
         else
@@ -208,7 +210,7 @@ public class NPCController : BaseClassCharacter
     }
 
     // Metodă pentru a aplica damage player-ului
-    private void ApplyDamageToPlayer(int damage)
+    private void ApplyDamageToPlayer(float damage)
     {
         if (baseClassPlayer != null)
         {
@@ -229,7 +231,7 @@ public class NPCController : BaseClassCharacter
         // Check the distance and apply damage if close enough
         if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance - 0.1f)
         {   
-            ApplyDamageToPlayer(50); // Aplica damage de 50 player-ului
+            ApplyDamageToPlayer(DifficultyClass.damageMultiplier * 50); // Aplica damage player-ului
             MainCharacter playerMainCharacter = Player.GetComponent<MainCharacter>();
             playerMainCharacter.StartCoroutine(playerMainCharacter.FlashRed()); //facem playerul rosu
 

@@ -7,12 +7,12 @@ public class mainMenu : MonoBehaviour
 {
     public void playGame()
     {
-        SceneManager.LoadSceneAsync(3);
+        SceneManager.LoadSceneAsync(1);
     }
 
     public void selectShop()
     {
-        SceneManager.LoadSceneAsync(1);
+        SceneManager.LoadSceneAsync(3);
     }
 
     public void selectSettings()

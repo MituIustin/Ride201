@@ -11,6 +11,7 @@ TagManager:
   - wall
   - tp_trigger
   - ground
+  - scrollView
   - punch
   layers:
   - Default
@@ -21,9 +22,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
   - grd
+  - 
+  -
   - 
   - 
   - 

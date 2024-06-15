@@ -249,4 +249,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be525fe67eaa8e14d8311d6326c63c57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roadSection: {fileID: 9109811634293412811}
+  roadSection_normal: {fileID: 9109811634293412811}
+  roadSection_traffic_light: {fileID: 9109811634293412811, guid: 7a2791553b6344c49898d07b66987064, type: 3}

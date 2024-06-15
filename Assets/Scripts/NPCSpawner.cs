@@ -14,15 +14,16 @@ public class NPCSpawner : MonoBehaviour
 
     IEnumerator Spawning()
     {
+        NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
         while (true)
         {
-            if (NPCSpawnVariables.spawning == false && NPCSpawnVariables.npcsalive == 0)
-                NPCSpawnVariables.spawning = true;
+            if (spawnVariables.spawning == false && spawnVariables.npcsalive == 0)
+                spawnVariables.spawning = true;
 
-            if (NPCSpawnVariables.spawning == true && NPCSpawnVariables.npcsalive >= 7)
-                NPCSpawnVariables.spawning = false;
+            if (spawnVariables.spawning == true && spawnVariables.npcsalive >= 7)
+                spawnVariables.spawning = false;
 
-            if (NPCSpawnVariables.spawning)
+            if (spawnVariables.spawning)
             {
                 int npcType = Random.Range(0, 3);
                 Vector2 spawnPoint = new Vector2(Random.Range(20, 25), 2);

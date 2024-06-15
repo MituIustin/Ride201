@@ -32,7 +32,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
     public GameObject slider;
     private List<Collider2D> ignoredColliders = new List<Collider2D>();
 
-
+    public GameObject slider;
 
     void Start()
     {
@@ -45,6 +45,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         SetInitialOrientation();
         StartCoroutine(GetOnBus());
+
     }
 
 
@@ -81,6 +82,24 @@ public class NPCControllerNonHostile : BaseClassCharacter
         rb.velocity = movement;
         yield return new WaitForSeconds(0.1f);
         ok = true;
+        
+        GameObject canvasObject = new GameObject("Canvas");
+
+        Canvas canvas = canvasObject.AddComponent<Canvas>();
+
+        canvas.renderMode = RenderMode.WorldSpace;
+
+        CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+
+        canvasObject.AddComponent<GraphicRaycaster>();
+
+        canvasObject.transform.SetParent(gameObject.transform, false);
+
+        healhtbar = Instantiate(slider, new Vector3(0, 0, 1), Quaternion.identity);
+        healhtbar.transform.SetParent(canvasObject.transform, false);
+
+
     }
     void ChangeDirection()
     {
@@ -112,6 +131,15 @@ public class NPCControllerNonHostile : BaseClassCharacter
         {
             healthbar.transform.position = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
             healthbar.GetComponent<HealthBarScript>().changeHealth(base.getHealth());
+        }
+
+        if (healhtbar)
+        {
+            healhtbar.GetComponent<RectTransform>().anchoredPosition = new Vector2(transform.position.x, transform.position.y+7);
+            healhtbar.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 10);
+            healhtbar.GetComponent<RectTransform>().localScale = new Vector3(0.1f, 0.1f, 0);
+            healhtbar.GetComponent<HealthBarScript>().changeHealth(base.getHealth());
+            Debug.Log(base.getHealth());
         }
 
 

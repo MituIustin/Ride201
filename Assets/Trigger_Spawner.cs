@@ -4,8 +4,29 @@ using UnityEngine;
 
 public class Trigger_Spawner : MonoBehaviour
 {
-    public GameObject roadSection;
+    public GameObject roadSection_normal;
+    public GameObject roadSection_traffic_light;
+    private GameObject roadSection;
     private bool has_spawned = false;
+
+    void Start()
+    {
+        CreateRoadSection();
+    }
+
+    void CreateRoadSection()
+    {
+
+        // Check if actual_speed is 7 and roll a 1/20 chance
+        if (MoveLeft.actual_speed == 7 && Random.Range(0, 5) == 0)
+        {
+            roadSection = roadSection_traffic_light;
+        }
+        else
+        {
+            roadSection = roadSection_normal;
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -17,10 +38,9 @@ public class Trigger_Spawner : MonoBehaviour
 
             // Assuming the roadSection has a script with a public attribute you want to set
             MoveLeft roadSectionScript = newRoadSection.GetComponent<MoveLeft>();
-            MoveLeft oldroadSectionScript = roadSection.GetComponent<MoveLeft>();
             if (roadSectionScript != null)
             {
-                roadSectionScript.speed = oldroadSectionScript.actual_speed; 
+                roadSectionScript.speed = MoveLeft.actual_speed; 
             }
         }
     }

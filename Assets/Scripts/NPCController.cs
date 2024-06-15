@@ -25,6 +25,7 @@ public class NPCController : BaseClassCharacter
     // Define the attack cooldown to avoid multiple attacks in a short time
     private float attackCooldown = 1.5f;
     private float lastAttackTime;
+    private bool isKnockedBack = false;
 
     void Start()
     {
@@ -258,5 +259,21 @@ public class NPCController : BaseClassCharacter
     {
         yield return new WaitForSeconds(delay);
         Destroy(Player);
+    }
+
+    public void ApplyKnockback(Vector2 knockbackForce)
+    {
+        StartCoroutine(HandleKnockback(knockbackForce));
+    }
+
+    private IEnumerator HandleKnockback(Vector2 knockbackForce)
+    {
+        isKnockedBack = true;
+        rb.AddForce(knockbackForce, ForceMode2D.Impulse);
+
+        // Wait a short time to allow the knockback to take effect
+        yield return new WaitForSeconds(0.1f);
+
+        isKnockedBack = false;
     }
 }

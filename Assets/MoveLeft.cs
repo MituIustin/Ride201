@@ -9,7 +9,7 @@ public class MoveLeft : MonoBehaviour
     // Update is called once per frame
 
     public float speed = 7f;
-    public float actual_speed;
+    public static float actual_speed;
 
     private void Start()
     {
@@ -19,10 +19,10 @@ public class MoveLeft : MonoBehaviour
     {
         NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
         if (spawnVariables.spawning == true && actual_speed > 0f)
-            actual_speed -= 0.01f;
+            actual_speed -= 0.001f;
 
         if (spawnVariables.spawning == false && actual_speed < 7f)
-            actual_speed += 0.01f;
+            actual_speed += 0.001f;
 
 
         transform.position -= new Vector3(actual_speed, 0, 0) * Time.deltaTime;

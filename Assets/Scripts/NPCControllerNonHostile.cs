@@ -26,6 +26,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
     private int currentDirection = -1;
     private GameObject healthbar;
     private bool isFalling = false;
+    private bool isKnockedBack = false;
 
 
     public GameObject slider;
@@ -127,7 +128,8 @@ public class NPCControllerNonHostile : BaseClassCharacter
         }
 
         Vector2 movement = new Vector2(currentDirection * speed, rb.velocity.y);
-        rb.velocity = movement;
+        if(!isKnockedBack)
+            rb.velocity = movement;
 
         if (got_on_bus == false && spawnVariables.spawning == false)
         {  //scapam de npcuri ramase afara
@@ -286,6 +288,22 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
         // Destroy the game object after the animation
         Destroy(gameObject);
+    }
+
+    public void ApplyKnockback(Vector2 knockbackForce)
+    {
+        StartCoroutine(HandleKnockback(knockbackForce));
+    }
+
+    private IEnumerator HandleKnockback(Vector2 knockbackForce)
+    {
+        isKnockedBack = true;
+        rb.AddForce(knockbackForce, ForceMode2D.Impulse);
+
+        // Wait a short time to allow the knockback to take effect
+        yield return new WaitForSeconds(0.1f);
+
+        isKnockedBack = false;
     }
 
 }

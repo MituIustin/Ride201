@@ -2266,6 +2266,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2298733656414259765, guid: ed9be69f417767545b1173d75ea45639, type: 3}
+      propertyPath: roadSection
+      value: 
+      objectReference: {fileID: 9109811634293412811, guid: ed9be69f417767545b1173d75ea45639, type: 3}
     - target: {fileID: 8104465019509033096, guid: ed9be69f417767545b1173d75ea45639, type: 3}
       propertyPath: m_LocalPosition.x
       value: 17.82

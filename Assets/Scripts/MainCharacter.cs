@@ -15,6 +15,7 @@ public class MainCharacter : BaseClassCharacter
     public float dashDuration = 0.2f;
     public float dashCooldown = 2f;
     private bool isDashing = false;
+    private bool isKnockedBack = false;
     private SpriteRenderer spriteRenderer;
 
     private Vector3 dashDirection;
@@ -36,7 +37,7 @@ public class MainCharacter : BaseClassCharacter
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = rb.GetComponent<SpriteRenderer>(); 
+        spriteRenderer = rb.GetComponent<SpriteRenderer>();
         MainChrConstructor();
         facingRight = true;
         wasGrounded = checkGrd();
@@ -52,6 +53,7 @@ public class MainCharacter : BaseClassCharacter
     {
         animator.SetFloat("Health", base.getHealth());
         Debug.Log(base.getHealth());
+        //Debug.Log(MoveLeft.actual_speed);
         bool isGrounded = checkGrd();
         //moving direction
         horizontalMove = Input.GetAxis("Horizontal") * Speed;
@@ -89,7 +91,10 @@ public class MainCharacter : BaseClassCharacter
 
     private void FixedUpdate()
     {
-        Moving(horizontalMove, jump);
+        if (!isKnockedBack) // Prevents interference during knockback and dashing
+        {
+            Moving(horizontalMove, jump);
+        }
     }
 
     void Moving(float movement, bool canjump)
@@ -180,4 +185,19 @@ public class MainCharacter : BaseClassCharacter
         spriteRenderer.color = Color.white; // Reset color to normal
     }
 
+    public void ApplyKnockback(Vector2 knockbackForce)
+    {
+        StartCoroutine(HandleKnockback(knockbackForce));
+    }
+
+    private IEnumerator HandleKnockback(Vector2 knockbackForce)
+    {
+        isKnockedBack = true;
+        rb.AddForce(knockbackForce, ForceMode2D.Impulse);
+
+        // Wait a short time to allow the knockback to take effect
+        yield return new WaitForSeconds(1f);
+
+        isKnockedBack = false;
+    }
 }

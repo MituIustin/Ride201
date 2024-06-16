@@ -54,7 +54,6 @@ public class NPCController : BaseClassCharacter
         NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
         if (base.getHealth() <= 0 && !isFalling)
         {
-            Debug.Log(base.getHealth());
             spawnVariables.npcsalive -= 1;
             StartCoroutine(FallAndDie());
         }
@@ -113,7 +112,7 @@ public class NPCController : BaseClassCharacter
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.gameObject); // bogos
+        //Debug.Log(other.gameObject); // bogos
         NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
 
         if (other.gameObject.CompareTag("tp_trigger") && spawnVariables.spawning)

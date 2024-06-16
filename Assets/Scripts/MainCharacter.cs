@@ -23,6 +23,9 @@ public class MainCharacter : BaseClassCharacter
     public Animator animator;
 
     private bool wasGrounded;
+    private Coroutine speedBuffCoroutine;
+    private Coroutine damageBuffCoroutine;
+
 
     // Start is called before the first frame update
     void MainChrConstructor()
@@ -52,7 +55,7 @@ public class MainCharacter : BaseClassCharacter
     private void Update()
     {
         animator.SetFloat("Health", base.getHealth());
-        Debug.Log(base.getHealth());
+        //Debug.Log(base.getHealth());
         //Debug.Log(MoveLeft.actual_speed);
         bool isGrounded = checkGrd();
         //moving direction
@@ -153,21 +156,47 @@ public class MainCharacter : BaseClassCharacter
         isDashing = false;
     }
 
+    public void IncreaseDamage()
+    {
+        if (damageBuffCoroutine != null)
+        {
+            StopCoroutine(damageBuffCoroutine);
+            Debug.Log("PAUZA");
+        }
+        damageBuffCoroutine = StartCoroutine(ChangeSpeed());
+    }
+
+    private IEnumerator ChangeDamage()
+    {
+        Damage = 5;
+
+        GameObject.FindWithTag("scrollView").GetComponent<UiConsumables>().AddItemUi(1);
+
+
+        yield return new WaitForSeconds(20f);
+
+
+        Damage = 3;
+
+    }
+
     public void IncreaseSpeed()
     {
-        StartCoroutine(ChangeSpeed());
+        if (speedBuffCoroutine!=null)
+        {
+            StopCoroutine(speedBuffCoroutine);
+            Debug.Log("PAUZA");
+        }
+        speedBuffCoroutine=StartCoroutine(ChangeSpeed());
     }
 
     private IEnumerator ChangeSpeed()
     {
         Speed = 30f;
-
+        
         GameObject.FindWithTag("scrollView").GetComponent<UiConsumables>().AddItemUi(0);
 
-        if (GameObject.FindWithTag("scrollView"))
-        {
-            Debug.Log("TEST");
-        }
+        
 
         Debug.Log("VITEZA");
 

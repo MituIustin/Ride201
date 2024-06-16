@@ -10,13 +10,20 @@ using UnityEngine.UI;
 public class UiConsumables : MonoBehaviour
 {
 
-    public Sprite[] ConsumablesItems;
+    private Sprite[] ConsumablesItems= new Sprite[2];
 
     public List<GameObject> buffs = new List<GameObject>();
 
+    public Sprite speedBuffSprite;
+    public Sprite powerBuffSprite;
+
     public GameObject slider;
 
-
+    private void Start()
+    {
+        ConsumablesItems[0] = speedBuffSprite;
+        ConsumablesItems[1] = powerBuffSprite;
+    }
     void Update()
     {
         for (int i = buffs.Count - 1; i >= 0; i--)
@@ -68,6 +75,19 @@ public class UiConsumables : MonoBehaviour
 
         RectTransform pos = newImage.GetComponent<RectTransform>();
 
+        int y = buffs.Count();
+        
+        for(int i = buffs.Count - 1; i >= 0; i--)
+        {
+            if (newImage.GetComponent<Image>().sprite == buffs[i].GetComponent<Image>().sprite)
+            {
+                buffs.RemoveAt(i);
+                //Destroy(buffs[i]);
+                y = i;
+                break;
+            }
+        }
+
         pos.anchoredPosition = new Vector2(0, 30 - 100 * buffs.Count());
 
         pos.sizeDelta = new Vector2(80, 80);
@@ -82,8 +102,6 @@ public class UiConsumables : MonoBehaviour
 
         
         test.GetComponent<DurationBarScript>().TimeLeft(newImage);
-
-
 
         
     }

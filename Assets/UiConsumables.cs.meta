@@ -3,7 +3,10 @@ guid: f065b69ac46b49e4d9ed477900520682
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - speedBuffSprite: {fileID: 21300000, guid: b0c871bd2724c6147a5f08bf1908cc1f, type: 3}
+  - powerBuffSprite: {fileID: 21300000, guid: ae47a38e01650cb4f8e9990265f1e1cc, type: 3}
+  - slider: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

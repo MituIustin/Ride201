@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConsumablesScript : MonoBehaviour
+public class proteinScript : MonoBehaviour
 {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag=="player")
+        if (collision.gameObject.tag == "player")
         {
-            GameObject.FindWithTag("player").GetComponent<MainCharacter>().IncreaseSpeed();
+            GameObject.FindWithTag("player").GetComponent<MainCharacter>().IncreaseDamage();
             Destroy(gameObject);
         }
     }

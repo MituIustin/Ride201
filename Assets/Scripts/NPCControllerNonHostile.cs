@@ -12,7 +12,9 @@ public class NPCControllerNonHostile : BaseClassCharacter
     List<GameObject> npcs = new List<GameObject>();
     Collider2D col;
     SpriteRenderer spriteRenderer;
-
+    
+    
+    
     private bool got_on_bus = false;
     private float leaving_speed = 0f;
     private bool isDestructionStarted = false;
@@ -28,11 +30,16 @@ public class NPCControllerNonHostile : BaseClassCharacter
     private bool isFalling = false;
     private bool isKnockedBack = false;
 
+    private int item_chance;
+    private bool droped_item;
 
     public GameObject slider;
+    public GameObject[] items;
     private List<Collider2D> ignoredColliders = new List<Collider2D>();
 
-    public GameObject slider;
+
+
+
 
     void Start()
     {
@@ -43,6 +50,11 @@ public class NPCControllerNonHostile : BaseClassCharacter
         changeDirectionTime = UnityEngine.Random.Range(5f, 20f);
         directionTimer = 500f;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        items=GameObject.FindGameObjectsWithTag("consumable");
+        int item_chance = UnityEngine.Random.Range(1, 100);
+
+
         SetInitialOrientation();
         StartCoroutine(GetOnBus());
 
@@ -96,8 +108,8 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
         canvasObject.transform.SetParent(gameObject.transform, false);
 
-        healhtbar = Instantiate(slider, new Vector3(0, 0, 1), Quaternion.identity);
-        healhtbar.transform.SetParent(canvasObject.transform, false);
+        //healhtbar = Instantiate(slider, new Vector3(0, 0, 1), Quaternion.identity);
+        //healhtbar.transform.SetParent(canvasObject.transform, false);
 
 
     }
@@ -122,8 +134,22 @@ public class NPCControllerNonHostile : BaseClassCharacter
         NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
         if (base.getHealth() <= 0 && !isFalling)
         {
-            Debug.Log(base.getHealth());
             spawnVariables.npcsalive -= 1;
+            
+            Debug.Log(item_chance);
+            if (item_chance < 100 && !droped_item)
+            {
+                Vector3 pos = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+                //Debug.Log(items);
+                GameObject item=Instantiate(items[0], pos, Quaternion.identity);
+                int index = UnityEngine.Random.Range(0, 1);
+                if (items[index]!= null)
+                {
+                    item.GetComponent<ConsumablesScript>().spawn(pos);
+                    droped_item = true;
+                }
+                
+            }
             StartCoroutine(FallAndDie()); 
         }
 
@@ -133,14 +159,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
             healthbar.GetComponent<HealthBarScript>().changeHealth(base.getHealth());
         }
 
-        if (healhtbar)
-        {
-            healhtbar.GetComponent<RectTransform>().anchoredPosition = new Vector2(transform.position.x, transform.position.y+7);
-            healhtbar.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 10);
-            healhtbar.GetComponent<RectTransform>().localScale = new Vector3(0.1f, 0.1f, 0);
-            healhtbar.GetComponent<HealthBarScript>().changeHealth(base.getHealth());
-            Debug.Log(base.getHealth());
-        }
+        
 
 
         if (ok == false)
@@ -302,6 +321,9 @@ public class NPCControllerNonHostile : BaseClassCharacter
         float elapsedTime = 0;
 
         // Animate the fall
+        
+        
+        
         while (elapsedTime < fallDuration)
         {
             transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / fallDuration);
@@ -316,6 +338,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
         // Destroy the game object after the animation
         Destroy(gameObject);
+
     }
 
     public void ApplyKnockback(Vector2 knockbackForce)

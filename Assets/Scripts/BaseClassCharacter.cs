@@ -31,6 +31,16 @@ public class BaseClassCharacter : MonoBehaviour
 
     }
 
+    public float getDamage()
+    {
+        return Damage;
+    }
+
+    public void setHealth(int heal)
+    {
+        health = heal;
+    }
+
 
 
 

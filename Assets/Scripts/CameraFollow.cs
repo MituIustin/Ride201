@@ -12,11 +12,11 @@ public class CameraFollow : MonoBehaviour
     }
 
     private void Update()
-    {
-        transform.position = new Vector3(
-            Mathf.Lerp(transform.position.x, player.transform.position.x, 0.05f),
-            transform.position.y,
-            -1
-            );
+    {   if(player != null)
+            transform.position = new Vector3(
+                Mathf.Lerp(transform.position.x, player.transform.position.x, 0.05f),
+                transform.position.y,
+                -1
+                );
     }
 }

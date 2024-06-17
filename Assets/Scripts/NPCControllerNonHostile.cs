@@ -334,11 +334,6 @@ public class NPCControllerNonHostile : BaseClassCharacter
             //Debug.Log(items);
             GameObject item = Instantiate(items[0], pos, Quaternion.identity);
             int index = UnityEngine.Random.Range(0, 1);
-            if (items[index] != null)
-            {
-                item.GetComponent<ConsumablesScript>().spawn(pos);
-                droped_item = true;
-            }
 
         }
 

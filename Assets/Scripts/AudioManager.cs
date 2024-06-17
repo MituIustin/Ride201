@@ -25,6 +25,7 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         music.clip = bkg;
+        music.loop = true;
         music.Play();
     }
 

@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NPCController : BaseClassCharacter
 {
     public GameObject Player;
     private BaseClassCharacter baseClassPlayer;
-
     private bool got_on_bus = false;
     private float leaving_speed = 0f;
     private bool isDestructionStarted = false;
@@ -30,7 +30,7 @@ public class NPCController : BaseClassCharacter
     void Start()
     {
         Player = GameObject.Find("player");
-
+        
         if (Player != null)
         {
             // Obține componenta BaseClassCharacter de la player
@@ -58,22 +58,24 @@ public class NPCController : BaseClassCharacter
             StartCoroutine(FallAndDie());
         }
         if (spawnVariables.spawning == false)
-        {
-            anim.SetFloat("Distance_To_Player", Vector2.Distance(transform.position, Player.transform.position));
+        {   
+            if(Player != null)
+                anim.SetFloat("Distance_To_Player", Vector2.Distance(transform.position, Player.transform.position));
         }
         else
         {
             anim.SetFloat("Distance_To_Player", 1000f);  //sa nu atace cat e imbarcare
         }
         // Check distance to the player and call the Attack function if close enough
-        if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance && spawnVariables.spawning == false)
-        {
-            if (Time.time > lastAttackTime + attackCooldown)
+        if(Player != null)
+            if (Vector2.Distance(transform.position, Player.transform.position) <= attackDistance && spawnVariables.spawning == false)
             {
-                Attack();
-                lastAttackTime = Time.time;
+                if (Time.time > lastAttackTime + attackCooldown)
+                {
+                    Attack();
+                    lastAttackTime = Time.time;
+                }
             }
-        }
 
         // Move away from bus if conditions are met
         if (!got_on_bus && !spawnVariables.spawning)
@@ -93,14 +95,16 @@ public class NPCController : BaseClassCharacter
         transform.position = vec;
 
         // Move on the same Y-axis as the player
-        if (Vector2.Distance(transform.position, Player.transform.position) >= attackDistance - 0.2f)
-        {
-            Vector3 v = new Vector3(Player.transform.position.x, transform.position.y, 3f);
-            transform.position = Vector3.MoveTowards(transform.position, v, 2f * Time.deltaTime);
-        }
+        if(Player != null)
+            if (Vector2.Distance(transform.position, Player.transform.position) >= attackDistance - 0.2f)
+            {
+                Vector3 v = new Vector3(Player.transform.position.x, transform.position.y, 3f);
+                transform.position = Vector3.MoveTowards(transform.position, v, 2f * Time.deltaTime);
+            }
 
         // Flip the sprite based on the direction to the player
-        spriteRenderer.flipX = transform.position.x > Player.transform.position.x;
+        if (Player != null)
+            spriteRenderer.flipX = transform.position.x > Player.transform.position.x;
     }
 
     // Coroutine to destroy the NPC after a delay
@@ -211,7 +215,7 @@ public class NPCController : BaseClassCharacter
         Destroy(gameObject);
     }
 
-    // Metodă pentru a aplica damage player-ului
+    // Metoda pentru a aplica damage player-ului
     private void ApplyDamageToPlayer(float damage)
     {
         if (baseClassPlayer != null)
@@ -260,6 +264,7 @@ public class NPCController : BaseClassCharacter
     {
         yield return new WaitForSeconds(delay);
         Destroy(Player);
+        
     }
 
     public void ApplyKnockback(Vector2 knockbackForce)

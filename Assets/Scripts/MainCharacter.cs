@@ -18,7 +18,8 @@ public class MainCharacter : BaseClassCharacter
     private bool isDashing = false;
     private bool isKnockedBack = false;
     private SpriteRenderer spriteRenderer;
-
+    AudioManager audio;
+    public GameObject gmover;
     private Vector3 dashDirection;
     private Rigidbody2D rb;
     public Animator animator;
@@ -43,6 +44,9 @@ public class MainCharacter : BaseClassCharacter
 
     private void Start()
     {
+        gmover = GameObject.FindGameObjectWithTag("gameover");
+        gmover.SetActive(false);
+        audio = GameObject.FindGameObjectWithTag("audio").GetComponent<AudioManager>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = rb.GetComponent<SpriteRenderer>();
         MainChrConstructor();
@@ -123,10 +127,12 @@ public class MainCharacter : BaseClassCharacter
         if (Input.GetKeyDown(KeyCode.Space) && checkGrd())
         {
             jump = true;
+            audio.PlaySFX(audio.jump);
         }
 
         if (Input.GetKeyDown(KeyCode.Z) && !isGrounded)
         {
+            audio.PlaySFX(audio.dash);
             float horizontalInput = Input.GetAxis("Horizontal");
             dashDirection = new Vector3(horizontalInput, 0f, transform.position.y).normalized;
             StartCoroutine(Dash());
@@ -275,9 +281,14 @@ public class MainCharacter : BaseClassCharacter
 
     public IEnumerator FlashRed()
     {
+        audio.PlaySFX(audio.damage);
         spriteRenderer.color = Color.red;   // Change color to red 
         yield return new WaitForSeconds(0.5f);  // Wait for 0.5 seconds
         spriteRenderer.color = Color.white; // Reset color to normal
+
+        if(base.getHealth() <= 0)
+            gmover.SetActive(true);
+       
     }
 
     public void ApplyKnockback(Vector2 knockbackForce)

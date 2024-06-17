@@ -288,6 +288,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
     {
         isFalling = true;
 
+        
 
         if (healthbar != null)
         {
@@ -336,6 +337,15 @@ public class NPCControllerNonHostile : BaseClassCharacter
         GameObject.FindWithTag("money").GetComponent<CurrencyManager>().AddMoney(1);
         // Destroy the game object after the animation
         Destroy(gameObject);
+
+        if (item_chance < 100 && !droped_item)
+        {
+            Vector3 pos = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+            //Debug.Log(items);
+            GameObject item = Instantiate(items[0], pos, Quaternion.identity);
+            int index = UnityEngine.Random.Range(0, 1);
+
+        }
 
     }
 

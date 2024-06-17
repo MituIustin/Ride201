@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class ConsumablesScript : MonoBehaviour
 {
+    AudioManager audio;
 
+
+    public void Start()
+    {
+        audio = GameObject.FindGameObjectWithTag("audio").GetComponent<AudioManager>();
+    }
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag=="player")
         {
+            audio.PlaySFX(audio.pickup);
             GameObject.FindWithTag("player").GetComponent<MainCharacter>().IncreaseSpeed();
             Destroy(gameObject);
         }

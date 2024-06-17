@@ -14,6 +14,9 @@ TagManager:
   - scrollView
   - punch
   - consumable
+  - audio
+  - gameover
+  - nlvl
   - healthBar
   - money
   - soldEnergy

@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Audio Manager 
+// Used for sound effects and background music 
+
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] AudioSource music;
     [SerializeField] AudioSource sfx;
+
+    // Audio clips used 
 
     public AudioClip bkg;
     public AudioClip punch;
@@ -15,11 +20,15 @@ public class AudioManager : MonoBehaviour
     public AudioClip jump;
     public AudioClip dash;
 
+    // BKG music player
+
     private void Start()
     {
         music.clip = bkg;
         music.Play();
     }
+
+    // Play a sound effect method
 
     public void PlaySFX(AudioClip clip)
     {

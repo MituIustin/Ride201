@@ -10,21 +10,45 @@ public class NPCSpawner : MonoBehaviour
     public GameObject nextlvl;
     public int lvl;
     public Text lvltext;
-    //public next nextlvlScript;
+    string[] statii;
 
     void Start()
     {
         lvl = 1;
+        statii = new string[19] { "Complex Grozavesti", 
+            "Facultatea De Filosofie",
+            "Facultatea de Educatie Fizica si Sport", 
+            "Stirbei Voda", 
+            "Facultatea De Drept", 
+            "Piata Mihail Kogalniceanu", 
+            "Gradina Cismigiu", 
+            "Universitate", 
+            "Teatrul National", 
+            "Piata Rosetti", 
+            "Teatrul National", 
+            "Universitate", 
+            "Gradina Cismigiu", 
+            "Piata Mihail Kogalniceanu", 
+            "Facultatea De Drept", 
+            "Stirbei Voda",
+            "Facultatea de Educatie Fizica si Sport", 
+            "Facultatea De Filosofie", 
+            "Complex Grozavesti"};
+
+        // Reference to next lvl UI
+
         nextlvl = GameObject.FindGameObjectWithTag("nlvl");
         nextlvl.SetActive(false);
-        lvltext.text = "LVL " + lvl.ToString();
+        lvltext.text = "LVL " + lvl.ToString() + "\n" + statii[lvl - 1];
         lvl++;
+
         StartCoroutine(HideBackgroundAfterTime(5.0f));
         NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
         spawnVariables.spawning = true;
         spawnVariables.npcsalive = 0;
         StartCoroutine(Spawning());
     }
+
     System.Collections.IEnumerator HideBackgroundAfterTime(float time)
     {
         nextlvl.SetActive(true);
@@ -37,17 +61,22 @@ public class NPCSpawner : MonoBehaviour
         NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
         while (true)
         {
+            // START SPAWNING
+
             if (spawnVariables.spawning == false && spawnVariables.npcsalive == 0)
             {
-                lvltext.text = "LVL " + lvl.ToString();
+                lvltext.text = "LVL " + lvl.ToString() + "\n" + statii[lvl - 1];
                 lvl++;
                 StartCoroutine(HideBackgroundAfterTime(5.0f));
                 spawnVariables.spawning = true;
             }
-                
+
+            // STOP SPAWNING
 
             if (spawnVariables.spawning == true && spawnVariables.npcsalive >= 7)
                 spawnVariables.spawning = false;
+
+            // INSTANTIATE NPC
 
             if (spawnVariables.spawning)
             {
@@ -61,10 +90,5 @@ public class NPCSpawner : MonoBehaviour
                 yield return null;
             }
         }
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

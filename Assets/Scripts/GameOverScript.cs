@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+// Game Over Screen
+
 public class GameOverScript : MonoBehaviour
 {
     public void Setup()
     {
         gameObject.SetActive(true);
-        
     }
 
     public void Restart()

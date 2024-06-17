@@ -23,19 +23,13 @@ public class MainCharacter : BaseClassCharacter
     private Vector3 dashDirection;
     private Rigidbody2D rb;
     public Animator animator;
-
     private bool wasGrounded;
     private Coroutine speedBuffCoroutine;
     private Coroutine damageBuffCoroutine;
 
-
-
-
-
     // Start is called before the first frame update
     void MainChrConstructor()
     {
-        // EXEMPLU
         Health = 20;
         Damage = 1;
         Hostile = false;
@@ -44,9 +38,16 @@ public class MainCharacter : BaseClassCharacter
 
     private void Start()
     {
+        // Reference of Game Over Screen 
+
         gmover = GameObject.FindGameObjectWithTag("gameover");
         gmover.SetActive(false);
+
+        // Reference of Audio Manager
+
         audio = GameObject.FindGameObjectWithTag("audio").GetComponent<AudioManager>();
+
+        // Reference of player's RB
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = rb.GetComponent<SpriteRenderer>();
         MainChrConstructor();
@@ -67,8 +68,6 @@ public class MainCharacter : BaseClassCharacter
         canvasObject.AddComponent<GraphicRaycaster>();
 
         GameObject slider = GameObject.FindWithTag("healthBar");
-
-        
 
         // Instantiate the health bar slider
         GameObject healthbar = Instantiate(slider, Vector3.zero, Quaternion.identity);
@@ -107,9 +106,9 @@ public class MainCharacter : BaseClassCharacter
         {
             PlayerPrefs.SetInt("kit2", 0);
         }
-        
-
     }
+
+    // Using Raycast to check if player is on the ground
 
     private bool checkGrd()
     {
@@ -120,23 +119,27 @@ public class MainCharacter : BaseClassCharacter
     private void Update()
     {
         animator.SetFloat("Health", base.getHealth());
-        //Debug.Log(base.getHealth());
-        //Debug.Log(MoveLeft.actual_speed);
         bool isGrounded = checkGrd();
-        //moving direction
+
+        // Moving direction
+
         horizontalMove = Input.GetAxis("Horizontal") * Speed;
         animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
         // Rotating
+
         if (horizontalMove < 0f) transform.localEulerAngles = new Vector3(0, 180, 0);
         if (horizontalMove > 0f) transform.localEulerAngles = new Vector3(0, 0, 0);
 
         // Jumping
+
         if (Input.GetKeyDown(KeyCode.Space) && checkGrd())
         {
             jump = true;
             audio.PlaySFX(audio.jump);
         }
+
+        // Dashing
 
         if (Input.GetKeyDown(KeyCode.Z) && !isGrounded)
         {
@@ -228,7 +231,6 @@ public class MainCharacter : BaseClassCharacter
         if (damageBuffCoroutine != null)
         {
             StopCoroutine(damageBuffCoroutine);
-            Debug.Log("PAUZA");
         }
         damageBuffCoroutine = StartCoroutine(ChangeDamage());
     }
@@ -236,15 +238,9 @@ public class MainCharacter : BaseClassCharacter
     private IEnumerator ChangeDamage()
     {
         Damage = 2;
-
         GameObject.FindWithTag("scrollView").GetComponent<UiConsumables>().AddItemUi(1);
-
-
         yield return new WaitForSeconds(20f);
-
-
         Damage = 1;
-
     }
 
     public void IncreaseSpeed()
@@ -252,15 +248,13 @@ public class MainCharacter : BaseClassCharacter
         if (speedBuffCoroutine!=null)
         {
             StopCoroutine(speedBuffCoroutine);
-            Debug.Log("PAUZA");
         }
         speedBuffCoroutine=StartCoroutine(ChangeSpeed());
     }
 
     public void IncreaseSpeedStartGame()
     {
-        StartCoroutine(StartSpeed());
-       
+        StartCoroutine(StartSpeed());  
     }
 
     private IEnumerator StartSpeed()
@@ -283,17 +277,8 @@ public class MainCharacter : BaseClassCharacter
     private IEnumerator ChangeSpeed()
     {
         Speed = 30f;
-        
         GameObject.FindWithTag("scrollView").GetComponent<UiConsumables>().AddItemUi(0);
-
-        
-
-        Debug.Log("VITEZA");
-
         yield return new WaitForSeconds(20f);
-
-        Debug.Log("FARA VITEZA");
-
         Speed = 20f;
     }
 
@@ -313,13 +298,14 @@ public class MainCharacter : BaseClassCharacter
     public IEnumerator FlashRed()
     {
         audio.PlaySFX(audio.damage);
-        spriteRenderer.color = Color.red;   // Change color to red 
+        spriteRenderer.color = Color.red;       // Change color to red 
         yield return new WaitForSeconds(0.5f);  // Wait for 0.5 seconds
-        spriteRenderer.color = Color.white; // Reset color to normal
+        spriteRenderer.color = Color.white;     // Reset color to normal
+
+        // Enable Game Over Screen
 
         if(base.getHealth() <= 0)
-            gmover.SetActive(true);
-       
+            gmover.SetActive(true);  
     }
 
     public void ApplyKnockback(Vector2 knockbackForce)

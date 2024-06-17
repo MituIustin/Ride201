@@ -2,6 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Currency System Controller 
+
 public class CurrencyManager : MonoBehaviour
 {
     public int playerMoney;
@@ -11,7 +13,6 @@ public class CurrencyManager : MonoBehaviour
     {
         moneyText = GameObject.FindWithTag("money").GetComponent<TextMeshProUGUI>();
         playerMoney = PlayerPrefs.GetInt("PlayerMoney", 0);
-
     }
 
     private void Update()
@@ -25,6 +26,8 @@ public class CurrencyManager : MonoBehaviour
         SaveMoney();
     }
 
+    // Buying items 
+
     public void SpendMoney(int amount)
     {
         if (playerMoney >= amount)
@@ -37,6 +40,8 @@ public class CurrencyManager : MonoBehaviour
             Debug.Log("Nu ai destui bani!");
         }
     }
+
+    // After death, saving money
 
     public void SaveMoney()
     {

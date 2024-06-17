@@ -14,6 +14,8 @@ public class PunchScript : MonoBehaviour
 
     private void Start()
     {
+        // Getting the right references 
+
         audio = GameObject.FindGameObjectWithTag("audio").GetComponent<AudioManager>();
         punchObject.SetActive(false);
         player = GameObject.Find("player");
@@ -22,6 +24,8 @@ public class PunchScript : MonoBehaviour
 
     void Update()
     {
+        // Checks if player presses X
+
         NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
         if (Input.GetKeyDown(KeyCode.X) && !isPunching && spawnVariables.spawning == false && animator.GetBool("CanJump") == false)
         {
@@ -31,6 +35,8 @@ public class PunchScript : MonoBehaviour
             StartCoroutine(PunchCooldown(0.7f));
         }
     }
+
+    // Enable / Disable animation for punch
 
     IEnumerator DeactivatePunchAfterDelay(float delay)
     {

@@ -78,6 +78,23 @@ public class UiConsumables : MonoBehaviour
 
         Debug.Log(buffs);
 
+        if (speedBuffSprite == null)
+        {
+            GameObject[] consumables = GameObject.FindGameObjectsWithTag("consumable");
+            foreach (GameObject consumable in consumables)
+            {
+                if (consumable.name == "Hell")
+                {
+                    speedBuffSprite = consumable.GetComponent<SpriteRenderer>().sprite;
+                }
+                else if (consumable.name == "Protein")
+                {
+
+                    powerBuffSprite = consumable.GetComponent<SpriteRenderer>().sprite;
+                }
+            }
+        }
+
 
 
         GameObject newImage = new GameObject("buff " + buffs.Count());
@@ -99,19 +116,21 @@ public class UiConsumables : MonoBehaviour
 
         RectTransform pos = newImage.GetComponent<RectTransform>();
 
-        int y = buffs.Count();
         
         for(int i = buffs.Count - 1; i >= 0; i--)
         {
             if (newImage.GetComponent<Image>().sprite == buffs[i].GetComponent<Image>().sprite)
             {
                 Destroy(buffs[i]);
-                buffs.RemoveAt(i);
-                y = i;
+                Update();
+
+
                 break;
             }
         }
+        int y = buffs.Count();
 
+        
         pos.anchoredPosition = new Vector2(0, 30 - 100 * buffs.Count());
 
         pos.sizeDelta = new Vector2(80, 80);

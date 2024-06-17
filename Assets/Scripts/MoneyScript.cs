@@ -10,15 +10,8 @@ public class CurrencyManager : MonoBehaviour
     private void Start()
     {
         moneyText = GameObject.FindWithTag("money").GetComponent<TextMeshProUGUI>();
-        if (playerMoney == null)
-        {
-            playerMoney = 0;
-        }
-        else
-        {
-            playerMoney = PlayerPrefs.GetInt("PlayerMoney", 0);
-        }
-        
+        playerMoney = PlayerPrefs.GetInt("PlayerMoney", 0);
+
     }
 
     private void Update()
@@ -41,7 +34,7 @@ public class CurrencyManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Nu ai suficien?i bani!");
+            Debug.Log("Nu ai destui bani!");
         }
     }
 

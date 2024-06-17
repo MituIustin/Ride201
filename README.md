@@ -31,6 +31,8 @@ Avand in vedere faptul ca jocul este facut in Unity acest punct a fost destul de
 
 ![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/report.jpg)
 
+![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/report2.jpg)
+
 6. Refactoring / Code Standards ( 1P )  ✔️
    
 7. Comentarii Cod  ( 1P ) ✔️

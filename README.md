@@ -27,7 +27,7 @@ Avand in vedere faptul ca jocul este facut in Unity acest punct a fost destul de
 
 5. Raportare Bug ( 1P ) ✔️
 
-![image](link3)
+![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/report.jpg)
 
 6. Refactoring / Code Standards ( 1P )  ✔️
    
@@ -52,4 +52,6 @@ Am folosit ChatGPT pentru grafica jocului dupa cum se poate observa in imagini :
 ![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/chat3.jpg)
 
 ![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/chat4.jpg)
+
+![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/chat5.jpg)
 

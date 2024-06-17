@@ -210,6 +210,8 @@ public class NPCController : BaseClassCharacter
         transform.position = targetPosition;
 
         // Destroy the game object after the animation
+
+        GameObject.FindWithTag("money").GetComponent<CurrencyManager>().AddMoney(3);
         Destroy(gameObject);
     }
 

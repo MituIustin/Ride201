@@ -10,20 +10,16 @@ using UnityEngine.UI;
 public class UiConsumables : MonoBehaviour
 {
 
-    private Sprite[] ConsumablesItems= new Sprite[2];
-
+    
     public List<GameObject> buffs = new List<GameObject>();
 
+    
     public Sprite speedBuffSprite;
     public Sprite powerBuffSprite;
 
     public GameObject slider;
 
-    private void Start()
-    {
-        ConsumablesItems[0] = speedBuffSprite;
-        ConsumablesItems[1] = powerBuffSprite;
-    }
+    
     void Update()
     {
         for (int i = buffs.Count - 1; i >= 0; i--)
@@ -38,6 +34,23 @@ public class UiConsumables : MonoBehaviour
                 buffs.RemoveAt(i);
                 backInPlace(i);
                 i++;
+            }
+        }
+    }
+
+    private void Start()
+    {
+        GameObject[] consumables = GameObject.FindGameObjectsWithTag("consumable");
+        foreach(GameObject consumable in consumables)
+        {
+            if (consumable.name == "Hell")
+            {
+                speedBuffSprite = consumable.GetComponent<SpriteRenderer>().sprite;
+            }
+            else if(consumable.name== "Protein")
+            {
+
+                powerBuffSprite = consumable.GetComponent<SpriteRenderer>().sprite;
             }
         }
     }
@@ -66,11 +79,22 @@ public class UiConsumables : MonoBehaviour
         Debug.Log(buffs);
 
 
+
         GameObject newImage = new GameObject("buff " + buffs.Count());
         newImage.AddComponent<Image>();
 
-        newImage.GetComponent<Image>().sprite = ConsumablesItems[index];
-               
+        if (index == 0)
+        {
+
+            newImage.GetComponent<Image>().sprite = speedBuffSprite;
+        }
+        else
+        {
+
+            newImage.GetComponent<Image>().sprite = powerBuffSprite;
+        }
+
+
         newImage.transform.SetParent(GameObject.FindWithTag("scrollView").transform, false);
 
         RectTransform pos = newImage.GetComponent<RectTransform>();
@@ -81,8 +105,8 @@ public class UiConsumables : MonoBehaviour
         {
             if (newImage.GetComponent<Image>().sprite == buffs[i].GetComponent<Image>().sprite)
             {
+                Destroy(buffs[i]);
                 buffs.RemoveAt(i);
-                //Destroy(buffs[i]);
                 y = i;
                 break;
             }

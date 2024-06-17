@@ -136,7 +136,6 @@ public class NPCControllerNonHostile : BaseClassCharacter
         {
             spawnVariables.npcsalive -= 1;
             
-            Debug.Log(item_chance);
             
             StartCoroutine(FallAndDie()); 
         }
@@ -273,7 +272,8 @@ public class NPCControllerNonHostile : BaseClassCharacter
         yield return new WaitForSeconds(0.2f); // Adjust the delay time as needed
 
         // Apply the punch effects
-        base.getPunched(100);
+        float damage = GameObject.FindWithTag("player").GetComponent<BaseClassCharacter>().getDamage();
+        base.getPunched(damage*100);
 
         // Apply knockback
         Vector2 direction = (transform.position - other.transform.position).normalized;
@@ -325,6 +325,16 @@ public class NPCControllerNonHostile : BaseClassCharacter
         transform.rotation = targetRotation;
         transform.position = targetPosition;
 
+        if (item_chance < 30 && !droped_item)
+        {
+            Vector3 pos = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+            //Debug.Log(items);
+            int index = UnityEngine.Random.Range(0, 3);
+            GameObject item = Instantiate(items[index], pos, Quaternion.identity);
+
+        }
+
+        GameObject.FindWithTag("money").GetComponent<CurrencyManager>().AddMoney(1);
         // Destroy the game object after the animation
         Destroy(gameObject);
 

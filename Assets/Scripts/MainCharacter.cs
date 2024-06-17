@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class MainCharacter : BaseClassCharacter
 {
@@ -28,12 +29,15 @@ public class MainCharacter : BaseClassCharacter
     private Coroutine damageBuffCoroutine;
 
 
+
+
+
     // Start is called before the first frame update
     void MainChrConstructor()
     {
         // EXEMPLU
         Health = 20;
-        Damage = 3;
+        Damage = 1;
         Hostile = false;
         Speed = 20f;
     }
@@ -48,6 +52,55 @@ public class MainCharacter : BaseClassCharacter
         MainChrConstructor();
         facingRight = true;
         wasGrounded = checkGrd();
+
+        GameObject canvasObject = new GameObject("Canvas");
+
+        // Add Canvas component
+        Canvas canvas = canvasObject.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay; // Use ScreenSpaceOverlay to render on top of everything
+
+        // Add CanvasScaler component
+        CanvasScaler scaler = canvasObject.AddComponent<CanvasScaler>();
+        scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+
+        // Add GraphicRaycaster component
+        canvasObject.AddComponent<GraphicRaycaster>();
+
+        GameObject slider = GameObject.FindWithTag("healthBar");
+
+        
+
+        // Instantiate the health bar slider
+        GameObject healthbar = Instantiate(slider, Vector3.zero, Quaternion.identity);
+
+        // Set the health bar as a child of the Canvas
+        healthbar.transform.SetParent(canvasObject.transform, false);
+
+        // Adjust the size and position of the health bar
+        RectTransform rectTransform = healthbar.GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(100, 20); // Adjust size as needed
+        rectTransform.localScale = new Vector3(2f, 1f, 1f); // Set scale to 1
+
+        // Set anchor and pivot to the middle of the screen
+        rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+        rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+        rectTransform.pivot = new Vector2(0.5f, 0.5f);
+
+        // Center the health bar in the canvas
+        rectTransform.anchoredPosition = new Vector3(0,-170,0);
+
+        if (PlayerPrefs.GetInt("kit1",0)==1)
+        {
+            IncreaseSpeed();
+            PlayerPrefs.SetInt("kit1", 0);
+        }
+        if (PlayerPrefs.GetInt("kit2", 0) == 1)
+        {
+            IncreaseDamage();
+            PlayerPrefs.SetInt("kit2", 1);
+        }
+        
+
     }
 
     private bool checkGrd()
@@ -169,12 +222,12 @@ public class MainCharacter : BaseClassCharacter
             StopCoroutine(damageBuffCoroutine);
             Debug.Log("PAUZA");
         }
-        damageBuffCoroutine = StartCoroutine(ChangeSpeed());
+        damageBuffCoroutine = StartCoroutine(ChangeDamage());
     }
 
     private IEnumerator ChangeDamage()
     {
-        Damage = 5;
+        Damage = 2;
 
         GameObject.FindWithTag("scrollView").GetComponent<UiConsumables>().AddItemUi(1);
 
@@ -182,7 +235,7 @@ public class MainCharacter : BaseClassCharacter
         yield return new WaitForSeconds(20f);
 
 
-        Damage = 3;
+        Damage = 1;
 
     }
 
@@ -213,6 +266,19 @@ public class MainCharacter : BaseClassCharacter
         Speed = 20f;
     }
 
+    public void RestoreHealth()
+    {
+        if (base.getHealth() < 250)
+        {
+            int heal = (int)(base.getHealth() + 50);
+            base.setHealth(heal);
+        }
+        else
+        {
+            base.setHealth(300);
+        }
+    }
+
     public IEnumerator FlashRed()
     {
         audio.PlaySFX(audio.damage);
@@ -240,4 +306,6 @@ public class MainCharacter : BaseClassCharacter
 
         isKnockedBack = false;
     }
+
+    
 }

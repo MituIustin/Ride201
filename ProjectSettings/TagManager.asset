@@ -17,6 +17,10 @@ TagManager:
   - audio
   - gameover
   - nlvl
+  - healthBar
+  - money
+  - soldEnergy
+  - soldProtein
   layers:
   - Default
   - TransparentFX

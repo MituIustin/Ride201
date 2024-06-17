@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NPCController : BaseClassCharacter
 {
     public GameObject Player;
     private BaseClassCharacter baseClassPlayer;
-    [SerializeField] public GameOverScript GameOverScript;
     private bool got_on_bus = false;
     private float leaving_speed = 0f;
     private bool isDestructionStarted = false;
@@ -30,7 +30,7 @@ public class NPCController : BaseClassCharacter
     void Start()
     {
         Player = GameObject.Find("player");
-
+        
         if (Player != null)
         {
             // Obține componenta BaseClassCharacter de la player
@@ -209,7 +209,7 @@ public class NPCController : BaseClassCharacter
         Destroy(gameObject);
     }
 
-    // Metodă pentru a aplica damage player-ului
+    // Metoda pentru a aplica damage player-ului
     private void ApplyDamageToPlayer(float damage)
     {
         if (baseClassPlayer != null)
@@ -256,9 +256,9 @@ public class NPCController : BaseClassCharacter
 
     private IEnumerator DestroyPlayerAfterDelay(float delay)
     {
-        // GameOverScript.Setup();
         yield return new WaitForSeconds(delay);
         Destroy(Player);
+        
     }
 
     public void ApplyKnockback(Vector2 knockbackForce)

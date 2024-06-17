@@ -18,7 +18,7 @@ public class MainCharacter : BaseClassCharacter
     private bool isKnockedBack = false;
     private SpriteRenderer spriteRenderer;
     AudioManager audio;
-
+    public GameObject gmover;
     private Vector3 dashDirection;
     private Rigidbody2D rb;
     public Animator animator;
@@ -40,6 +40,8 @@ public class MainCharacter : BaseClassCharacter
 
     private void Start()
     {
+        gmover = GameObject.FindGameObjectWithTag("gameover");
+        gmover.SetActive(false);
         audio = GameObject.FindGameObjectWithTag("audio").GetComponent<AudioManager>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = rb.GetComponent<SpriteRenderer>();
@@ -217,6 +219,10 @@ public class MainCharacter : BaseClassCharacter
         spriteRenderer.color = Color.red;   // Change color to red 
         yield return new WaitForSeconds(0.5f);  // Wait for 0.5 seconds
         spriteRenderer.color = Color.white; // Reset color to normal
+
+        if(base.getHealth() <= 0)
+            gmover.SetActive(true);
+       
     }
 
     public void ApplyKnockback(Vector2 knockbackForce)

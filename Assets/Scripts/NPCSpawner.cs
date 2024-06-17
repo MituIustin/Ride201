@@ -2,17 +2,34 @@ using Assets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NPCSpawner : MonoBehaviour
 {
     public List<GameObject> enemies;
+    public GameObject nextlvl;
     public int lvl;
+    public Text lvltext;
     //public next nextlvlScript;
 
     void Start()
     {
-        lvl = 0;
+        lvl = 1;
+        nextlvl = GameObject.FindGameObjectWithTag("nlvl");
+        nextlvl.SetActive(false);
+        lvltext.text = "LVL " + lvl.ToString();
+        lvl++;
+        StartCoroutine(HideBackgroundAfterTime(5.0f));
+        NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
+        spawnVariables.spawning = true;
+        spawnVariables.npcsalive = 0;
         StartCoroutine(Spawning());
+    }
+    System.Collections.IEnumerator HideBackgroundAfterTime(float time)
+    {
+        nextlvl.SetActive(true);
+        yield return new WaitForSeconds(time);
+        nextlvl.SetActive(false);
     }
 
     IEnumerator Spawning()
@@ -22,8 +39,9 @@ public class NPCSpawner : MonoBehaviour
         {
             if (spawnVariables.spawning == false && spawnVariables.npcsalive == 0)
             {
-                //nextlvlScript.Setup(lvl);
-                //lvl++;
+                lvltext.text = "LVL " + lvl.ToString();
+                lvl++;
+                StartCoroutine(HideBackgroundAfterTime(5.0f));
                 spawnVariables.spawning = true;
             }
                 

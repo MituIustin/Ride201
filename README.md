@@ -2,6 +2,8 @@
 
 # Ride 201 
 
+## Link DEMO OFFLINE : 
+
 1. User Stories / Backlog Creation ( 2P ) ✔️
 
 Acest punct a fost realizat utilizant platforma Trello. \
@@ -9,7 +11,7 @@ Dupa impartirea task-urilor, platforma arata astfel:
 
 ![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/trello.PNG)
 
-2. Diagrame UML / Workflow ( 2P) ✔️
+2. Diagrame UML / Gameflow ( 2P) ✔️
 
 Am folosit platforma Creatly.
 
@@ -35,7 +37,7 @@ Avand in vedere faptul ca jocul este facut in Unity acest punct a fost destul de
 
 8. Design Patterns ( 1P ) ✔️
 
-Singletone:
+Singleton:
 
 ![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/singletone.PNG)
 

@@ -91,13 +91,21 @@ public class MainCharacter : BaseClassCharacter
 
         if (PlayerPrefs.GetInt("kit1",0)==1)
         {
-            IncreaseSpeed();
+            IncreaseSpeedStartGame();
+            PlayerPrefs.SetInt("kit1", 0);
+        }
+        else
+        {
             PlayerPrefs.SetInt("kit1", 0);
         }
         if (PlayerPrefs.GetInt("kit2", 0) == 1)
         {
-            IncreaseDamage();
-            PlayerPrefs.SetInt("kit2", 1);
+            IncreaseDamageStartGame();
+            PlayerPrefs.SetInt("kit2", 0);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("kit2", 0);
         }
         
 
@@ -247,6 +255,29 @@ public class MainCharacter : BaseClassCharacter
             Debug.Log("PAUZA");
         }
         speedBuffCoroutine=StartCoroutine(ChangeSpeed());
+    }
+
+    public void IncreaseSpeedStartGame()
+    {
+        StartCoroutine(StartSpeed());
+       
+    }
+
+    private IEnumerator StartSpeed()
+    {
+        yield return new WaitForSeconds(15f);
+        speedBuffCoroutine = StartCoroutine(ChangeSpeed());
+    }
+
+    public void IncreaseDamageStartGame()
+    {
+        StartCoroutine(StartDamage());
+    }
+
+    private IEnumerator StartDamage()
+    {
+        yield return new WaitForSeconds(15f);
+        damageBuffCoroutine=StartCoroutine(ChangeDamage());
     }
 
     private IEnumerator ChangeSpeed()

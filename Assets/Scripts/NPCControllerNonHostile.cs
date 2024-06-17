@@ -31,7 +31,6 @@ public class NPCControllerNonHostile : BaseClassCharacter
     private bool isKnockedBack = false;
 
     private int item_chance;
-    private bool droped_item;
 
     public GameObject slider;
     public GameObject[] items;
@@ -52,7 +51,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         items=GameObject.FindGameObjectsWithTag("consumable");
-        int item_chance = UnityEngine.Random.Range(1, 100);
+        item_chance = UnityEngine.Random.Range(1, 100);
 
 
         SetInitialOrientation();
@@ -325,7 +324,9 @@ public class NPCControllerNonHostile : BaseClassCharacter
         transform.rotation = targetRotation;
         transform.position = targetPosition;
 
-        if (item_chance < 30 && !droped_item)
+        Debug.Log(item_chance);
+
+        if (item_chance < 30)
         {
             Vector3 pos = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
             //Debug.Log(items);
@@ -338,14 +339,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
         // Destroy the game object after the animation
         Destroy(gameObject);
 
-        if (item_chance < 100 && !droped_item)
-        {
-            Vector3 pos = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
-            //Debug.Log(items);
-            GameObject item = Instantiate(items[0], pos, Quaternion.identity);
-            int index = UnityEngine.Random.Range(0, 1);
-
-        }
+        
 
     }
 

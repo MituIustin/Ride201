@@ -11,12 +11,7 @@ public class buyScript : MonoBehaviour
     {
         boughtKit1 = PlayerPrefs.GetInt("kit1",0);
         boughtKit2 = PlayerPrefs.GetInt("kit2",0);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (boughtKit1==1)
+        if (boughtKit1 == 1)
         {
             GameObject.FindWithTag("soldEnergy").transform.GetChild(1).gameObject.SetActive(true);
         }
@@ -25,7 +20,7 @@ public class buyScript : MonoBehaviour
             GameObject.FindWithTag("soldEnergy").transform.GetChild(1).gameObject.SetActive(false);
 
         }
-        if (boughtKit2==1)
+        if (boughtKit2 == 1)
         {
             GameObject.FindWithTag("soldProtein").transform.GetChild(1).gameObject.SetActive(true);
         }
@@ -36,31 +31,34 @@ public class buyScript : MonoBehaviour
         }
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
     public void buyEnergy()
     {
         int money = PlayerPrefs.GetInt("PlayerMoney", 0);
-        if (money >= 50 && boughtKit1==0)  
+        if (money >= 20 && boughtKit1==0)  
         {
             boughtKit1 = 1;
             PlayerPrefs.SetInt("kit1", 1);
-            GameObject.FindWithTag("money").GetComponent<CurrencyManager>().SpendMoney(2);
+            GameObject.FindWithTag("money").GetComponent<CurrencyManager>().SpendMoney(20);
             GameObject.FindWithTag("soldEnergy").transform.GetChild(1).gameObject.SetActive(true);
         }
     }
     public void buyProtein()
     {
         int money = PlayerPrefs.GetInt("PlayerMoney",0);
-        if (money >= 70 && boughtKit2==0)
+        if (money >= 40 && boughtKit2==0)
         {
             boughtKit2 = 1;
-            PlayerPrefs.SetInt("kit2", 2);
-            GameObject.FindWithTag("money").GetComponent<CurrencyManager>().SpendMoney(2);
+            PlayerPrefs.SetInt("kit2", 1);
+            GameObject.FindWithTag("money").GetComponent<CurrencyManager>().SpendMoney(40);
             GameObject.FindWithTag("soldProtein").transform.GetChild(1).gameObject.SetActive(true);
         }
     }
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+    
 
 }

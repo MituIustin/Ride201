@@ -6,9 +6,12 @@ using UnityEngine;
 public class NPCSpawner : MonoBehaviour
 {
     public List<GameObject> enemies;
+    public int lvl;
+    //public next nextlvlScript;
 
     void Start()
     {
+        lvl = 0;
         StartCoroutine(Spawning());
     }
 
@@ -18,7 +21,12 @@ public class NPCSpawner : MonoBehaviour
         while (true)
         {
             if (spawnVariables.spawning == false && spawnVariables.npcsalive == 0)
+            {
+                //nextlvlScript.Setup(lvl);
+                //lvl++;
                 spawnVariables.spawning = true;
+            }
+                
 
             if (spawnVariables.spawning == true && spawnVariables.npcsalive >= 7)
                 spawnVariables.spawning = false;

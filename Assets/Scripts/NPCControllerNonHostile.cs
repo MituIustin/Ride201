@@ -137,19 +137,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
             spawnVariables.npcsalive -= 1;
             
             Debug.Log(item_chance);
-            if (item_chance < 100 && !droped_item)
-            {
-                Vector3 pos = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
-                //Debug.Log(items);
-                GameObject item=Instantiate(items[0], pos, Quaternion.identity);
-                int index = UnityEngine.Random.Range(0, 1);
-                if (items[index]!= null)
-                {
-                    item.GetComponent<ConsumablesScript>().spawn(pos);
-                    droped_item = true;
-                }
-                
-            }
+            
             StartCoroutine(FallAndDie()); 
         }
 
@@ -300,6 +288,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
     {
         isFalling = true;
 
+        
 
         if (healthbar != null)
         {
@@ -338,6 +327,20 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
         // Destroy the game object after the animation
         Destroy(gameObject);
+
+        if (item_chance < 100 && !droped_item)
+        {
+            Vector3 pos = new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z);
+            //Debug.Log(items);
+            GameObject item = Instantiate(items[0], pos, Quaternion.identity);
+            int index = UnityEngine.Random.Range(0, 1);
+            if (items[index] != null)
+            {
+                item.GetComponent<ConsumablesScript>().spawn(pos);
+                droped_item = true;
+            }
+
+        }
 
     }
 

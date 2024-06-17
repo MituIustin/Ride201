@@ -7,7 +7,7 @@ public class NPCController : BaseClassCharacter
 {
     public GameObject Player;
     private BaseClassCharacter baseClassPlayer;
-
+    [SerializeField] public GameOverScript GameOverScript;
     private bool got_on_bus = false;
     private float leaving_speed = 0f;
     private bool isDestructionStarted = false;
@@ -256,6 +256,7 @@ public class NPCController : BaseClassCharacter
 
     private IEnumerator DestroyPlayerAfterDelay(float delay)
     {
+        // GameOverScript.Setup();
         yield return new WaitForSeconds(delay);
         Destroy(Player);
     }

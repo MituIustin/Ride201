@@ -55,5 +55,5 @@ Am folosit ChatGPT pentru grafica jocului dupa cum se poate observa in imagini :
 
 ![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/chat4.jpg)
 
-![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/chat5.jpg)
+![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/chat5.PNG)
 

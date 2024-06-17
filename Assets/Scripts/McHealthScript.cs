@@ -9,6 +9,7 @@ public class McHealthScript : MonoBehaviour
     {
         Slider slider = GetComponent<Slider>();
         GameObject player = GameObject.FindWithTag("player");
-        slider.value = player.GetComponent<BaseClassCharacter>().getHealth();
+        if(player != null)
+            slider.value = player.GetComponent<BaseClassCharacter>().getHealth();
     }
 }

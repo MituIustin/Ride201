@@ -13,9 +13,11 @@ Dupa impartirea task-urilor, platforma arata astfel:
 
 2. Diagrame UML / Gameflow ( 2P) ✔️
 
-Am folosit platforma Creatly.
+Am folosit platforma Creatly dar si ChatGPT.
 
 ![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/gameflow.jpg)
+
+![image](https://github.com/MituIustin/Ride201/blob/iustin/Assets/images/uml.jpg)
 
 3. Source Control ( GitHub ) ✔️
 

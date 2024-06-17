@@ -29,6 +29,8 @@ public class MainCharacter : BaseClassCharacter
 
 
 
+
+
     // Start is called before the first frame update
     void MainChrConstructor()
     {
@@ -82,6 +84,18 @@ public class MainCharacter : BaseClassCharacter
 
         // Center the health bar in the canvas
         rectTransform.anchoredPosition = new Vector3(0,-170,0);
+
+        if (PlayerPrefs.GetInt("kit1",0)==1)
+        {
+            IncreaseSpeed();
+            PlayerPrefs.SetInt("kit1", 0);
+        }
+        if (PlayerPrefs.GetInt("kit2", 0) == 1)
+        {
+            IncreaseDamage();
+            PlayerPrefs.SetInt("kit2", 1);
+        }
+        
 
     }
 
@@ -281,4 +295,6 @@ public class MainCharacter : BaseClassCharacter
 
         isKnockedBack = false;
     }
+
+    
 }

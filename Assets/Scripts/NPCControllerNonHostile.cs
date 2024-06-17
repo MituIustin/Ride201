@@ -333,6 +333,7 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
         }
 
+        GameObject.FindWithTag("money").GetComponent<CurrencyManager>().AddMoney(1);
         // Destroy the game object after the animation
         Destroy(gameObject);
 

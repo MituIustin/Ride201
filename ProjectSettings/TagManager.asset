@@ -15,6 +15,9 @@ TagManager:
   - punch
   - consumable
   - healthBar
+  - money
+  - soldEnergy
+  - soldProtein
   layers:
   - Default
   - TransparentFX

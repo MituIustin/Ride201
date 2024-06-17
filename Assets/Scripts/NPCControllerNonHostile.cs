@@ -130,6 +130,10 @@ public class NPCControllerNonHostile : BaseClassCharacter
 
     void Update()
     {
+        Vector3 position = transform.position;
+        position.z = 5f;                    //Keep NPCs behind traffic light poles at all times
+        transform.position = position;
+
         NPCSpawnVariables spawnVariables = NPCSpawnVariables.Instance;
         if (base.getHealth() <= 0 && !isFalling)
         {
